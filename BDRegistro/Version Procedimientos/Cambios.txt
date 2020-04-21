@@ -1,0 +1,8 @@
+Nuevas Tablas
+349-382
+
+Atributos nuevos tabla periodo 
+Linea 33-49
+
+Atributo estadoCuenta TablaMatriculaCarrera 
+Linea 390 - 398
