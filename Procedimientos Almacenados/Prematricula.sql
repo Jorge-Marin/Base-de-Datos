@@ -85,7 +85,7 @@ BEGIN
             /*En caso de que su indice Global sea Cero*/
             /*Y que no tenga asignarutas en su historial academico*/
             /*y que el año de ingreso sea el año actual*/
-            IF(@indiceGlobal=0 AND @numAsignaturasAprobadas=0 /*AND SUBSTRING (@cuentaEstudiante,1,4)=CAST(YEAR(GETDATE()) AS VARCHAR(4))*/)
+            IF(@indiceGlobal=0 AND @numAsignaturasAprobadas=0 AND SUBSTRING (@cuentaEstudiante,1,4)=CAST(YEAR(GETDATE()) AS VARCHAR(4)))
                 BEGIN  
                     EXEC [smregistro].[spMatriculaPrioridad] @cuentaEstudiante, @codigoCarrera, 
                     @codAsigMatriculada, @codSeccion, @fechaPeriodo,@codperiodo, 2,  @inicioPrematricula, @finalPrematricula;
