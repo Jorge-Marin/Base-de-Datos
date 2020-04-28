@@ -465,6 +465,23 @@ CREATE TABLE Registro.smregistro.CancelacionClase(
 								)
 GO
 
+CREATE TABLE Registro.smregistro.CancelacionLabClase(
+								codCarrera VARCHAR(7),
+								cuentaEstudiante VARCHAR(15),
+								codSeccionLab INT,
+								codLab VARCHAR(7),
+								codAsignatura VARCHAR(7),
+								fecha DATE,
+								codPeriodo INT,
+								descripcion VARCHAR(30)
+								PRIMARY KEY(codCarrera,cuentaEstudiante,codSeccionLab,codAsignatura,fecha),
+								FOREIGN KEY(codCarrera) REFERENCES Registro.smregistro.Carrera(codCarrera),
+								FOREIGN KEY(cuentaEstudiante) REFERENCES Registro.smregistro.Estudiante(numCuenta),
+								FOREIGN KEY(codSeccionLab,codLab) REFERENCES Registro.smregistro.SeccionLab(codSeccion,codLab),
+								FOREIGN KEY(codPeriodo,fecha) REFERENCES Registro.smregistro.Periodo(codPeriodo,fechaInicio)
+								)
+GO
+
 --2 Tablas Correo Para almacenar los correos de las entidades que necesiten o poseean Uno
 CREATE TABLE Registro.smregistro.CorreoEmpleado(
 								codUsuario VARCHAR(7),
