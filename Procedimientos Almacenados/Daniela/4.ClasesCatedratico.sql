@@ -20,9 +20,9 @@ GO
 -- =============================================
 -- Author:		Bessy Daniela Zavala
 -- Create date: 6-4-2020
--- Description:	Mostrar que clases imparte un catedrï¿½tico
+-- Description:	Mostrar que clases imparte un catedrático
 -- =============================================
-CREATE PROCEDURE [dbo].[clasesCatedratico]
+ALTER PROCEDURE [dbo].[clasesCatedratico]
 	@catedratico VARCHAR(15)
 AS
 BEGIN
@@ -31,13 +31,22 @@ BEGIN
 	SET NOCOUNT ON;
 
     IF(@catedratico IN (SELECT codCatedratico FROM [smregistro].[Catedratico]))
-	BEGIN 
-		SELECT  [codAsignatura],[codSeccion] FROM [smregistro].[Seccion]
-		WHERE @catedratico = codCatedratico
-	END
+		BEGIN 
+			SELECT  smregistro.Empleado.primerNombre,
+			smregistro.Empleado.apellidoPaterno,
+			smregistro.Seccion.codAsignatura,
+			nombreAsignatura,codSeccion FROM smregistro.Seccion
+			INNER JOIN smregistro.Catedratico
+			ON smregistro.Catedratico.codCatedratico = smregistro.Seccion.codCatedratico
+			INNER JOIN smregistro.Empleado 
+			ON smregistro.Empleado.codEmpleado = smregistro.Catedratico.codEmpleado
+			INNER JOIN smregistro.Asignatura 
+			ON smregistro.Asignatura.codAsignatura = smregistro.Seccion.codAsignatura
+			WHERE smregistro.Seccion.codCatedratico = @catedratico 
+		END
 	ELSE
-	BEGIN
-	PRINT 'Cï¿½digo de catedrï¿½tico invï¿½lido'
-	END
+		BEGIN
+		PRINT 'Código de catedrático inválido'
+		END
 END
 GO

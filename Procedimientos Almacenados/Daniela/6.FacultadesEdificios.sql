@@ -28,14 +28,14 @@ BEGIN
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
 	IF(@codFacultad IN (SELECT [codFacultad] FROM [smregistro].[Facultad]))
-	BEGIN 
-		SELECT  [codFacultad],[codEdificioFF] FROM [smregistro].[Facultad]
-		WHERE @codFacultad = [codFacultad]
-	END
+		BEGIN 
+			SELECT  [codFacultad],[codEdificioFF] FROM [smregistro].[Facultad]
+			WHERE @codFacultad = [codFacultad]
+		END
 	ELSE
-	BEGIN
-	PRINT 'Código de facultad inválido'
-	END
+		BEGIN
+		PRINT 'Código de facultad inválido'
+		END
 	
 END
 GO

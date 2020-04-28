@@ -30,13 +30,13 @@ BEGIN
 
     -- Insert statements for procedure here
 	IF(@codCarrera IN (SELECT [codCarrera] FROM [smregistro].[Carrera]) AND @codClase IN (SELECT [codAsignatura] FROM [smregistro].[Asignatura]))
-	BEGIN 
-		SELECT [codAsignarutaRequisitos] FROM [smregistro].[Requisitos]
-		WHERE @codCarrera = [codCarreraFFR] AND @codClase = [codAsignaturaFFR]
-	END
+		BEGIN 
+			SELECT [codAsignarutaRequisitos] FROM [smregistro].[Requisitos]
+			WHERE @codCarrera = [codCarreraFFR] AND @codClase = [codAsignaturaFFR]
+		END
 	ELSE
-	BEGIN
-	PRINT 'Uno de los códigos ingresados no es válido'
-	END
+		BEGIN
+		PRINT 'Uno de los códigos ingresados no es válido'
+		END
 END
 GO
