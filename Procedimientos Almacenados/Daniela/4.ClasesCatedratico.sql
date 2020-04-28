@@ -20,7 +20,7 @@ GO
 -- =============================================
 -- Author:		Bessy Daniela Zavala
 -- Create date: 6-4-2020
--- Description:	Mostrar que clases imparte un catedrático
+-- Description:	Mostrar que clases imparte un catedrï¿½tico
 -- =============================================
 CREATE PROCEDURE [dbo].[clasesCatedratico]
 	@catedratico VARCHAR(15)
@@ -37,7 +37,7 @@ BEGIN
 	END
 	ELSE
 	BEGIN
-	PRINT 'Código de catedrático inválido'
+	PRINT 'Cï¿½digo de catedrï¿½tico invï¿½lido'
 	END
 END
 GO
