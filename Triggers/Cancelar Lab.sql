@@ -39,7 +39,7 @@ DELETE Registro.smregistro.CancelacionLabClase
 premaCancelartricula, matricula o adición y cancelación
 */
 -- =============================================
-ALTER TRIGGER [smregistro].[tgCancelarLab]
+CREATE TRIGGER [smregistro].[tgCancelarLab]
    ON  [smregistro].[CancelacionLabClase]
    AFTER INSERT
 AS 

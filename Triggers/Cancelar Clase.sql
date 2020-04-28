@@ -44,7 +44,7 @@ Cancelar una asignatura, puede cancelar una asignatura siempre y cuando se encue
 prematricula, matricula o adición y cancelación, si la clase tiene laboratorio, este también es cancelado
 */
 -- =============================================
-ALTER TRIGGER [smregistro].[tgCancelarClase]
+CREATE TRIGGER [smregistro].[tgCancelarClase]
    ON  [smregistro].[CancelacionClase]
    AFTER INSERT
 AS 
