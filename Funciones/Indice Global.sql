@@ -17,8 +17,8 @@ AS
 								FROM Registro.smregistro.HistorialAcademico Ha
 									INNER JOIN Registro.smregistro.Asignatura Ag
 									ON Ha.codAsignatura = Ag.codAsignatura
-										WHERE codCarrera = @codCarrera
-											AND cuentaEstudiante = @numeroCuenta), 0);
+									WHERE codCarrera = @codCarrera
+										AND cuentaEstudiante = @numeroCuenta), 0);
 
 	END
 GO

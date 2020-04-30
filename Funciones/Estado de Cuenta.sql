@@ -1,9 +1,10 @@
 -- =============================================
--- Author:		<Author,,Name>
--- Create date: <Create Date, ,>
--- Description:	<Description, ,>
+-- Author:		Jorge Arturo Reyes Marin
+-- Create date: 15/04/2020
+-- Description:	Retorna el valor de la cuenta del estudiante
+-- segun su numero de carreras o si es de primer ingreso
 -- =============================================
-ALTER FUNCTION smregistro.accountStatus
+CREATE FUNCTION smregistro.accountStatus
 (
 	@numeroCuenta VARCHAR(15)
 )
@@ -19,7 +20,7 @@ BEGIN
 
 
 		SET @cantidadCarrera = (SELECT COUNT(DISTINCT(codCarrera)) FROM Registro.smregistro.MatriculaCarrera 
-								WHERE cuentaEstudiante = '20171004244');
+								WHERE cuentaEstudiante = @numeroCuenta);
 
 		IF(@primerIngreso=0 AND SUBSTRING (@numeroCuenta,1,4) = CAST(YEAR(GETDATE()) AS VARCHAR(4)))
 			BEGIN 
@@ -44,4 +45,4 @@ END
 GO
 
 
-PRINT CAST([smregistro].[accountStatus] ('20171004244') AS CHAR(7));
+--PRINT CAST([smregistro].[accountStatus] ('20171004244') AS CHAR(7));

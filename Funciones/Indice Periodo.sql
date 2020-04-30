@@ -35,8 +35,3 @@ AS
 											AND fechaInicioPeriodo = CAST(@ultimoPeriodo AS VARCHAR(15))),0);
 	END
 GO
-
-
-
-
-SELECT * FROM Registro.smregistro.HistorialAcademico

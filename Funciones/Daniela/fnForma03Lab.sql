@@ -1,25 +1,7 @@
-USE [Registro]
-GO
--- ================================================
--- Template generated from Template Explorer using:
--- Create Inline Function (New Menu).SQL
---
--- Use the Specify Values for Template Parameters 
--- command (Ctrl-Shift-M) to fill in the parameter 
--- values below.
---
--- This block of comments will not be included in
--- the definition of the function.
--- ================================================
-
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 -- =============================================
 -- Author:		Bessy Daniela Zavala
 -- Create date: 23-04-2020
--- Description:	Función que retorne la forma 03 de laboratorios de un estudiante específico
+-- Description:	Funciï¿½n que retorne la forma 03 de laboratorios de un estudiante especï¿½fico
 -- =============================================
 
 CREATE FUNCTION FnForma03Lab
@@ -32,7 +14,7 @@ AS
 
 RETURN
 	
-	SELECT  smregistro.MatriculaLab.codLab 'Cod Lab.' ,smregistro.MatriculaLab.codSeccionLab 'Sección',
+	SELECT  smregistro.MatriculaLab.codLab 'Cod Lab.' ,smregistro.MatriculaLab.codSeccionLab 'Secciï¿½n',
 	smregistro.MatriculaLab.codAsignatura 'Cod.',nombreAsignatura 'Asignatura',
 	horaInicial 'HI',horaFinal 'HF', diaImparte 'Dias', nombreEdificio 'Edificio',
 	smregistro.SeccionLab.codAula 'Aula',unidadesValorativas 'UV',
