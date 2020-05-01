@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 USE [Registro]
 GO
 -- ================================================
@@ -33,28 +32,8 @@ RETURN
 	
 	-- Add the SELECT statement with parameter references here
 	SELECT periodo 'Periodo',YEAR(fechaInicio) 'año',fechaInicio 'Fecha de Inicio', fechaFinal 'Fecha Final' 
-		FROM smregistro.Periodo
+		FROM Registro.smregistro.Periodo
 		WHERE activo = 1
 )
 GO
-=======
--- =============================================
--- Author:		Bessy Daniela Zavala Licona
--- Create date: 24-04-2020
--- Description:	Retorna la fecha de inicio y final del periodo actual
--- =============================================
-CREATE FUNCTION fnFechasPeriodo
-()
-RETURNS TABLE 
-AS
-RETURN 
-(	
-	
-	-- Add the SELECT statement with parameter references here
-	SELECT periodo 'Periodo',YEAR(fechaInicio) 'aï¿½o',fechaInicio 'Fecha de Inicio', fechaFinal 'Fecha Final' 
-		FROM smregistro.Periodo
-		WHERE activo = 1
-)
-GO
->>>>>>> 7c235eecb7af97d1c9d1a1a9c8b4946fe1f34bca
 --SELECT * FROM [dbo].[fnFechasPeriodo]()

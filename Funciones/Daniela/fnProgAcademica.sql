@@ -22,30 +22,26 @@ GO
 -- Description:	Función que retorne la forma 03 de un estudiante específico
 -- =============================================
 
-CREATE FUNCTION FnForma03Clases
+CREATE FUNCTION FnProgramacionAcademica
 (	 
 	-- Add the parameters for the function here
-	@cuentaEstudiante VARCHAR(15)
+	@codCarrera Varchar(7)
 )
 RETURNS TABLE 
 AS
 
 RETURN
 	
-	SELECT M.codAsignatura 'Cod.',nombreAsignatura 'Asignatura',
-	M.codSeccionClase 'Sección',S.horaInicial 'HI',S.horaFinal 'HF',
-	S.diaPresenciales 'Dias', E.nombreEdificio 'Edificio',S.aula 'Aula',A.unidadesValorativas 'UV',
-	A.observacion 'OBS',(SELECT periodo FROM Registro.smregistro.Periodo WHERE activo = 1) 'Periodo'
-
-		FROM Registro.smregistro.MatriculaClase AS M
+	SELECT D.nombreDepartamento 'Departamento', A.nombreAsignatura 'Asignatura',
+			S.diaPresenciales 'Dias', S.codSeccion 'Sección', S.horaInicial 'HoraInicial',
+			S.horaFinal 'HoraFinal'
+		FROM Registro.smregistro.DepartamentosCarrera AS D
 			INNER JOIN Registro.smregistro.Asignatura AS A
-				ON M.codAsignatura = A.codAsignatura
+				ON D.codDepartamento = A.codDepartamentoFF
 			INNER JOIN Registro.smregistro.Seccion AS S
-				ON S.codSeccion = M.codSeccionClase
-			INNER JOIN Registro.smregistro.Edificio AS E
-				ON E.codEdificio = S.codEdificioFF
-			INNER JOIN Registro.smregistro.Aula AS Au
-				ON Au.aula = S.aula AND Au.codEdificioFF = S.codEdificioFF
-		WHERE M.cuentaEstudiante = @cuentaEstudiante
+				ON A.codAsignatura = S.codAsignatura
+			INNER JOIN Registro.smregistro.CarreraDepartamento AS C
+				ON D.codDepartamento = C.codDepartamentoFF
+			WHERE C.codCarreraFF = @codCarrera
+
 GO
---SELECT * FROM [dbo].[FnForma03Clases]('20171004244')
