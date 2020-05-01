@@ -22,7 +22,7 @@ GO
 -- Description:	Función que retorne la forma 03 de un estudiante específico
 -- =============================================
 
-CREATE FUNCTION FnProgramacionAcademica
+CREATE FUNCTION smregistro.FnProgramacionAcademica
 (	 
 	-- Add the parameters for the function here
 	@codCarrera Varchar(7)
@@ -32,8 +32,11 @@ AS
 
 RETURN
 	
-	SELECT D.nombreDepartamento 'Departamento', A.nombreAsignatura 'Asignatura',
-			S.diaPresenciales 'Dias', S.codSeccion 'Sección', S.horaInicial 'HoraInicial',
+	SELECT D.nombreDepartamento 'Departamento', 
+			A.nombreAsignatura 'Asignatura',
+			S.diaPresenciales 'Dias', 
+			S.codSeccion 'Sección', 
+			S.horaInicial 'HoraInicial',
 			S.horaFinal 'HoraFinal'
 		FROM Registro.smregistro.DepartamentosCarrera AS D
 			INNER JOIN Registro.smregistro.Asignatura AS A
