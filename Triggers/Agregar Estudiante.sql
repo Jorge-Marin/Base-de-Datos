@@ -29,7 +29,7 @@ obtenido es suficiente para alguna de las carreas existentes, de lo contrario no
 */
 -- =============================================
 
- CREATE TRIGGER [smregistro].[tgAgregarEstudiante]
+ ALTER TRIGGER [smregistro].[tgAgregarEstudiante]
    ON  [smregistro].[Estudiante]
    AFTER INSERT
 AS 
@@ -41,10 +41,13 @@ BEGIN
 	DECLARE @cuenta VARCHAR(15) 
 	DECLARE @indicePAA INT
 
-	SET @indicePAA = (SELECT [indicePAA] FROM inserted)
+	SET @indicePAA = (SELECT [indicePAA] 
+						FROM inserted)
 
 	--asignarle las uv
-	UPDATE [smregistro].[Estudiante] SET [unidadesValorativas] = 25 WHERE [numCuenta] = @cuenta
+	UPDATE [smregistro].[Estudiante] 
+		SET [unidadesValorativas] = 25 
+			WHERE [numCuenta] = @cuenta
 
 	--Verificar el indice PAA
 	IF(@indicePAA<(SELECT MIN([indiceRequerido]) FROM [smregistro].[Carrera]))
