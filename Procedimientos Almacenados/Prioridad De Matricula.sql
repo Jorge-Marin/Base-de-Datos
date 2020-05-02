@@ -3,7 +3,7 @@
 -- Create date: 12/04/2020
 -- Description:	Prioridad de Matricula
 -- =============================================
-CREATE PROCEDURE  [smregistro].[spMatriculaPrioridad]
+ALTER PROCEDURE  [smregistro].[spMatriculaPrioridad]
 	@cuentaEstudiante AS VARCHAR(15),
 	@codigoCarrera AS VARCHAR(7),
 	@codAsigMatriculada AS VARCHAR(7),
@@ -34,7 +34,49 @@ BEGIN
     que le correspone a la persona*/
     IF(CAST(GETDATE() AS DATE) = @fecha)
         BEGIN
-            EXEC [smregistro].[spMatriculaAsignatura] @cuentaEstudiante, @codigoCarrera, @codAsigMatriculada, @codSeccion, @fechaPeriodo,@codperiodo;
+            /*Ejecucion de un procedimiento almacenado que verifica que la clase no interfiera
+	        a la misma de una matriculada, tambien considera traslapes con los dias sabados,
+	        y con clases que cuente con mas de una hora diaria*/
+	        DECLARE @traslapeClase int
+	        EXEC @traslapeClase = [smregistro].[spTraslapeClase] @codSeccion, 
+                                                        @codAsigMatriculada, @codigoCarrera, 
+														@cuentaEstudiante, @fechaPeriodo;
+            IF(@traslapeClase=1)
+                BEGIN 
+                    PRINT 'Ya tiene una clase Matriculada en este horario';
+                    RETURN 0;
+                END
+            ELSE
+                BEGIN 
+                    /*Extrae los cupos de la seccion a matricular, se controla 
+					que la seccion exista, si no existe retornara 404 y no la matriculara*/
+					DECLARE @cuposSeccion INT;
+					SET @cuposSeccion = ISNULL((SELECT Se.cupos FROM Registro.smregistro.Seccion Se 
+												WHERE codAsignatura = @codAsigMatriculada 
+                                                AND codSeccion = @codSeccion), 404)
+                    IF(@cuposSeccion = 404)
+                        BEGIN 
+                            PRINT 'La seccion que desea matricular no existe';
+                            RETURN 0;
+                        END
+                    ELSE 
+                        BEGIN
+                            INSERT INTO Registro.smregistro.MatriculaClase (codAsignatura,
+												cuentaEstudiante,
+												codCarrera,
+												codSeccionClase,
+												fechaPeriodo,
+												codperiodo)
+											VALUES(
+												@codAsigMatriculada,
+												@cuentaEstudiante,
+												@codigoCarrera,
+												@codSeccion,
+												@fechaPeriodo,
+												@codperiodo
+											)
+                        END
+                END
             RETURN
         END
     ELSE 
@@ -45,3 +87,4 @@ BEGIN
 END
 GO
 
+						

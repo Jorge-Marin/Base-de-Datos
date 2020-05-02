@@ -50,7 +50,7 @@ BEGIN
             
             /*Exelencia Academica*/
             IF(@indiceGlobal>=80 AND @numAsignaturasAprobadas>=10)
-                BEGIN 
+                BEGIN
                     EXECUTE [smregistro].[spMatriculaPrioridad] @cuentaEstudiante, @codigoCarrera, 
                     @codAsigMatriculada, @codSeccion, @fechaPeriodo,@codperiodo, 1, @inicioPrematricula, @finalPrematricula;
                     RETURN;

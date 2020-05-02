@@ -14,7 +14,6 @@ CREATE PROCEDURE [smregistro].[spMatriculaAsignatura]
 	@codSeccion INT,
     @fechaPeriodo DATE,
     @codperiodo INT
-    
 AS
 BEGIN
 	SET NOCOUNT ON;

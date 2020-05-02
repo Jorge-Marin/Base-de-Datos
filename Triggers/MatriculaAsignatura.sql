@@ -29,6 +29,7 @@ BEGIN
 			BEGIN TRANSACTION
 				BEGIN TRY
 					
+
 					/*Extrae las unidades valorativas de la asignatura que desea matricular*/
 					DECLARE @uvAsignatura INT;
 					SET @uvAsignatura = (SELECT Ag.unidadesValorativas FROM Registro.smregistro.Asignatura 
@@ -48,7 +49,7 @@ BEGIN
 													AND codAsignatura = @codAsigMatriculada
 													AND calificacion >= 65);
 													
-
+					
 					/*Crea una tabla temporal de los requisitos que aun le falta a la clase 
 					matriculada*/
 					IF OBJECT_ID('tempdb.dbo.#RequisitosFaltantes', 'U') IS NOT NULL
@@ -63,18 +64,20 @@ BEGIN
 					que la seccion exista, si no existe retornara 404 y no la matriculara*/
 					DECLARE @cuposSeccion INT;
 					SET @cuposSeccion = ISNULL((SELECT Se.cupos FROM Registro.smregistro.Seccion Se 
-												WHERE codAsignatura = @codAsigMatriculada AND codSeccion = @codSeccion), 404)
+												WHERE codAsignatura = @codAsigMatriculada 
+												AND codSeccion = @codSeccion), 404)
 
 
 					/*Verifica que: 
 							1. El estudiante tenga unidades Valorativas Disponibles para matricular
 								la asignatura
 							2. Verifica que este matriculad@ en la carrera
-							3. Y que no este matriculando una asignatura que ya aprobo*/
+							3. Y que no este matriculando una asignatura que ya aprobo
+							4. Que exista la seccion que desea matricular*/
 					IF((@uvDisponible-@uvAsignatura)>=0 AND @uvDisponible IS NOT NULL AND @aprobada = 0 AND @cuposSeccion!= 404)
 						BEGIN
 							
-							/*Comprueba que no el estudiante cumpla con los requisitos para la clase*/
+							/*Comprueba que el estudiante cumpla con los requisitos para la clase*/
 							IF(@requisitos=0)
 								BEGIN
 												
@@ -159,7 +162,7 @@ BEGIN
 					ELSE 
 						BEGIN
 							/*
-								Muestra mensajes de unidades no suficientes o que la asignatura ya fue aprobada
+							Notifica algunos errores
 							*/
 							IF ((@uvDisponible-@uvAsignatura)<0)
 								BEGIN
