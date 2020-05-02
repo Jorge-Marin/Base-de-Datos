@@ -6,7 +6,7 @@ GO
 -- Description:	Mostrar el telefono de los empleados
 -- =============================================
 
-CREATE VIEW view_TelefonoEmpleados AS
+CREATE VIEW smregistro.ViewTelefonoEmpleados AS
   SELECT DISTINCT (primerNombre+' '+segundoNombre+' '+apellidoPaterno+' '+apellidoMaterno) AS Nombre,
 			codEmpleado AS Código,
 			telefono AS Teléfono

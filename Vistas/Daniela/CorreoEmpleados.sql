@@ -6,7 +6,7 @@ GO
 -- Description:	Mostrar el correo de los empleados
 -- =============================================
 
-CREATE VIEW view_CorreoEmpleados AS
+CREATE VIEW smregistro.ViewCorreoEmpleados AS
   SELECT DISTINCT (primerNombre+' '+segundoNombre+' '+apellidoPaterno+' '+apellidoMaterno) AS Nombre,
 			codEmpleado AS Código,
 			correo AS Correo,
@@ -14,4 +14,3 @@ CREATE VIEW view_CorreoEmpleados AS
 	FROM smregistro.Empleado AS e
 		INNER JOIN smregistro.CorreoEmpleado AS c
 			ON e.codEmpleado = c.codUsuario
-
