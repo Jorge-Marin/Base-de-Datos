@@ -1,16 +1,4 @@
 USE [Registro]
--- ================================================
--- Template generated from Template Explorer using:
--- Create Procedure (New Menu).SQL
---
--- Use the Specify Values for Template Parameters 
--- command (Ctrl-Shift-M) to fill in the parameter 
--- values below.
---
--- This block of comments will not be included in
--- the definition of the procedure.
--- ================================================
-USE [Registro]
 GO
 
 SET ANSI_NULLS ON
@@ -22,7 +10,7 @@ GO
 -- Create date: 6-4-2020
 -- Description:	Mostrar que clases imparte un catedrático
 -- =============================================
-ALTER PROCEDURE [dbo].[clasesCatedratico]
+CREATE PROCEDURE smregistro.spClasesCatedratico
 	@catedratico VARCHAR(15)
 AS
 BEGIN
@@ -32,21 +20,23 @@ BEGIN
 
     IF(@catedratico IN (SELECT codCatedratico FROM [smregistro].[Catedratico]))
 		BEGIN 
-			SELECT  smregistro.Empleado.primerNombre,
-			smregistro.Empleado.apellidoPaterno,
-			smregistro.Seccion.codAsignatura,
-			nombreAsignatura,codSeccion FROM smregistro.Seccion
-			INNER JOIN smregistro.Catedratico
-			ON smregistro.Catedratico.codCatedratico = smregistro.Seccion.codCatedratico
-			INNER JOIN smregistro.Empleado 
-			ON smregistro.Empleado.codEmpleado = smregistro.Catedratico.codEmpleado
-			INNER JOIN smregistro.Asignatura 
-			ON smregistro.Asignatura.codAsignatura = smregistro.Seccion.codAsignatura
-			WHERE smregistro.Seccion.codCatedratico = @catedratico 
+			SELECT  E.primerNombre,
+					E.apellidoPaterno,
+					S.codAsignatura,
+					A.nombreAsignatura,
+					S.codSeccion 
+				FROM smregistro.Seccion AS S
+					INNER JOIN smregistro.Catedratico AS C
+						ON C.codCatedratico = S.codCatedratico
+					INNER JOIN smregistro.Empleado AS E 
+						ON E.codEmpleado = C.codEmpleado
+					INNER JOIN smregistro.Asignatura AS A
+						ON A.codAsignatura = S.codAsignatura
+					WHERE S.codCatedratico = @catedratico 
 		END
 	ELSE
 		BEGIN
-		PRINT 'Código de catedrático inválido'
+			PRINT 'Código de catedrático inválido'
 		END
 END
 GO

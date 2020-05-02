@@ -1,15 +1,5 @@
 USE [Registro]
--- ================================================
--- Template generated from Template Explorer using:
--- Create Procedure (New Menu).SQL
---
--- Use the Specify Values for Template Parameters 
--- command (Ctrl-Shift-M) to fill in the parameter 
--- values below.
---
--- This block of comments will not be included in
--- the definition of the procedure.
--- ================================================
+
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -31,12 +21,13 @@ BEGIN
     -- Insert statements for procedure here
 	IF(@codFacultad IN (SELECT [codFacultad] FROM [smregistro].[Facultad]))
 		BEGIN 
-			SELECT  [codCarrera], [nombreCarrera] FROM [smregistro].[Carrera]
-			WHERE @codFacultad = [codFacultadFF]
+			SELECT  [codCarrera], [nombreCarrera]
+				FROM [smregistro].[Carrera]
+					WHERE @codFacultad = [codFacultadFF]
 		END
 	ELSE
 		BEGIN
-		PRINT 'Código de facultad inválido'
+			PRINT 'Código de facultad inválido'
 		END
 END
 GO

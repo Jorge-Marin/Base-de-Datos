@@ -5,10 +5,6 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
---NOTA, cambiar el tamaño de los dias imparte en las secciones de 10 a 12
---PROBAR
---[dbo].[agregarSeccion] 1201, 'FS-100', '12:00', '13:00', 30, 10, '203', 'LuMaMi', '105'
---SELECT * FROM Registro.smregistro.Seccion
 
 -- =============================================
 -- Author:		Bessy Daniela Zavala
@@ -19,7 +15,7 @@ Agregar una sección
 */
 -- =============================================
 
-ALTER PROCEDURE [dbo].[agregarSeccion]
+CREATE PROCEDURE smregistro.spAgregarSeccion
 		/*
 		Parametros que recibe el procedimiento
 		*/
@@ -57,156 +53,188 @@ BEGIN
 		*/
 		--
 		IF(@codAsignatura IN (SELECT codAsignatura FROM smregistro.Asignatura))
-		BEGIN
+			BEGIN
 
-		CREATE TABLE #DiasAsignaturaSeccionNueva (codDia INT PRIMARY KEY, Dia VARCHAR(2));
-            INSERT INTO #DiasAsignaturaSeccionNueva EXEC [smregistro].[spTablaDias] @diasImpartir;
+			CREATE TABLE #DiasAsignaturaSeccionNueva (codDia INT PRIMARY KEY, Dia VARCHAR(2));
+				INSERT INTO #DiasAsignaturaSeccionNueva EXEC [smregistro].[spTablaDias] @diasImpartir;
 
-		CREATE TABLE #Secciones (codSeccion INT, diasImparte VARCHAR(10), horaInicio TIME, horaFinal TIME,codEdificio INT, aula VARCHAR(20));
-		INSERT INTO #Secciones 
-		SELECT codSeccion, diaPresenciales,horaInicial,horaFinal,codEdificioFF,aula FROM smregistro.Seccion
-		--agregar las secciones de laboratorio
-		INSERT INTO #Secciones
-		SELECT codSeccion, diaImparte,horaInicial,horaFinal, codEdificioFF, codAula FROM smregistro.SeccionLab
-		
-		DECLARE @inicioSeccionExistente TIME;
-		DECLARE @FinalSeccionExistente TIME;
-		DECLARE @DiasPresencialesExistente VARCHAR(12);
-
-		WHILE @cantidadSecciones>0
-		BEGIN
-		
-			SELECT @inicioSeccionExistente=horaInicial, @FinalSeccionExistente = horaFinal, @DiasPresencialesExistente=diaPresenciales
-			FROM smregistro.Seccion WHERE codSeccion = (SELECT TOP(1) codSeccion FROM #Secciones)
-
-			IF OBJECT_ID('tempdb.dbo.#DiasSeccion', 'U') IS NOT NULL
-                    DROP TABLE #DiasSeccion; 
-                CREATE TABLE #DiasSeccion (codDia INT PRIMARY KEY, Dia VARCHAR(2));
-                INSERT INTO #DiasSeccion EXEC [smregistro].[spTablaDias] @DiasPresencialesExistente;
-
-			
-			DECLARE @cantidadDias INT;
-            SELECT @cantidadDias = COUNT(*) FROM #DiasSeccion;
-            DECLARE @codDia INT;
-		SAVE TRANSACTION Punto1
-			WHILE @cantidadDias > 0
-                BEGIN
-                    SELECT TOP(1) @codDia = codDia FROM #DiasSeccion
-                    IF((SELECT Dia FROM #DiasAsignaturaSeccionNueva WHERE codDia = @codDia)=(SELECT Dia FROM #DiasSeccion WHERE codDia = @codDia))
-                        BEGIN
-					
-							IF(@aula IN (SELECT Au.aula FROM Registro.smregistro.Edificio Ed
-							INNER JOIN Registro.smregistro.Aula	Au
-							ON Ed.codEdificio = Au.codEdificioFF
-							WHERE Ed.codEdificio = @codEdificio AND Au.aula = @aula
-							AND Au.aula IN (SELECT aula FROM Registro.smregistro.Seccion
-								WHERE codEdificioFF = @codEdificio 
-								AND @horaInicio <= horaInicial   AND @horaFinal>=horaFinal
-							
-						 AND @horaInicio<horaFinal)
-
-						  --verificar tambien las secciones de los laboratorios
-								OR Au.aula IN (SELECT aula FROM Registro.smregistro.SeccionLab
-								WHERE codEdificioFF = @codEdificio 
-								AND @horaInicio <= horaInicial   AND @horaFinal>=horaFinal
-							
-						 AND @horaInicio<horaFinal
-								))
-								)
-                                BEGIN
-									PRINT 'El aula no está disponible a esta hora y en este dia'
-									COMMIT TRANSACTION
-									
-                                    RETURN 0;
-                                END
-                        END
-                    DELETE TOP(1) FROM #DiasSeccion
-                    SELECT @cantidadDias = COUNT(*) FROM #DiasSeccion
-                END
-			
-		DELETE TOP (1) FROM #Secciones
-		SELECT @cantidadSecciones = COUNT(*) FROM #Secciones;
-
-		END
-		--PRINT 'Aula disponible'
-		--Aqui insertar, aula disponible e iniciar lo del catedratico
-		
--------------------------------
-		
-		SET @cantidadClases = (SELECT COUNT([codSeccion]) FROM [smregistro].[Seccion] WHERE [codCatedratico]= @codCatedratico) 
-		IF(@cantidadClases = 3 OR @codCatedratico NOT IN (SELECT [codCatedratico] FROM smregistro.Catedratico))
-		BEGIN
-		PRINT 'Código de catedrático no existente o ya tiene asignado el número límite de secciones que puede impartir'
-		COMMIT TRANSACTION
-		END
-		ELSE
-		BEGIN 
-		/*
-		Verificar que el catedrático no tenga ningun traslape
-		*/
-
-		CREATE TABLE #SeccionesImpartiendo (codSeccion INT, diasImparte VARCHAR(10), horaInicio TIME, horaFinal TIME, codCatedratico VARCHAR(15) 
-			);
-		INSERT INTO #SeccionesImpartiendo 
-		SELECT codSeccion, diaPresenciales,horaInicial,horaFinal,codCatedratico FROM smregistro.Seccion WHERE codCatedratico = @codCatedratico
-		
-
-		DECLARE @inicioSeccionCatedratico TIME;
-		DECLARE @FinalSeccionCatedratico TIME;
-		DECLARE @DiasPresencialesCatedratico VARCHAR(12);
-		DECLARE @cantidadImpartiendo INT
-	
-		SELECT @cantidadImpartiendo = COUNT(*) FROM #SeccionesImpartiendo;
-		SAVE TRANSACTION Punto2
-		WHILE @cantidadImpartiendo>0
-		BEGIN
-		
-			SELECT @inicioSeccionCatedratico=horaInicial, @FinalSeccionCatedratico = horaFinal, @DiasPresencialesCatedratico=diaPresenciales
-			FROM smregistro.Seccion WHERE codSeccion = (SELECT TOP(1) codSeccion FROM #SeccionesImpartiendo)
-
-			IF OBJECT_ID('tempdb.dbo.#DiasSeccionImparte', 'U') IS NOT NULL
-                    DROP TABLE #DiasSeccionImparte; 
-                CREATE TABLE #DiasSeccionImparte (codDia INT PRIMARY KEY, Dia VARCHAR(2));
-                INSERT INTO #DiasSeccionImparte EXEC [smregistro].[spTablaDias] @DiasPresencialesCatedratico;
+			CREATE TABLE #Secciones (codSeccion INT, diasImparte VARCHAR(10), horaInicio TIME, horaFinal TIME,codEdificio INT, aula VARCHAR(20));
 				
-			DECLARE @cantidadDiasImparte INT;
-            SELECT @cantidadDiasImparte = COUNT(*) FROM #DiasSeccionImparte;
-            DECLARE @codDiaImparte INT;
+				INSERT INTO #Secciones 
+				SELECT codSeccion, diaPresenciales,horaInicial,horaFinal,codEdificioFF,aula 
+					FROM smregistro.Seccion
+
+			--agregar las secciones de laboratorio
+				INSERT INTO #Secciones
+				SELECT codSeccion, diaImparte,horaInicial,horaFinal, codEdificioFF, codAula 
+					FROM smregistro.SeccionLab
+		
+			DECLARE @inicioSeccionExistente TIME;
+			DECLARE @FinalSeccionExistente TIME;
+			DECLARE @DiasPresencialesExistente VARCHAR(12);
+
+			WHILE @cantidadSecciones>0
+				BEGIN
+		
+					SELECT @inicioSeccionExistente=horaInicial, @FinalSeccionExistente = horaFinal, @DiasPresencialesExistente=diaPresenciales
+						FROM smregistro.Seccion 
+							WHERE codSeccion = (SELECT TOP(1) codSeccion
+												FROM #Secciones)
+
+					IF OBJECT_ID('tempdb.dbo.#DiasSeccion', 'U') IS NOT NULL
+							DROP TABLE #DiasSeccion; 
+
+						CREATE TABLE #DiasSeccion (codDia INT PRIMARY KEY, Dia VARCHAR(2));
+						INSERT INTO #DiasSeccion EXEC [smregistro].[spTablaDias] @DiasPresencialesExistente;
+
 			
-			WHILE @cantidadDiasImparte > 0
-                BEGIN
-                    SELECT TOP(1) @codDiaImparte = codDia FROM #DiasSeccionImparte
-                    IF((SELECT Dia FROM #DiasAsignaturaSeccionNueva WHERE codDia = @codDiaImparte)=(SELECT Dia FROM #DiasSeccionImparte WHERE codDia = @codDiaImparte))
-						BEGIN					
-						IF(@horaInicio <= @inicioSeccionCatedratico   AND @horaFinal>=@FinalSeccionCatedratico)
+					DECLARE @cantidadDias INT;
+					SELECT @cantidadDias = COUNT(*) FROM #DiasSeccion;
+					DECLARE @codDia INT;
+
+						SAVE TRANSACTION Punto1
+					WHILE @cantidadDias > 0
+						BEGIN
+							SELECT TOP(1) @codDia = codDia FROM #DiasSeccion
+							IF((SELECT Dia 
+									FROM #DiasAsignaturaSeccionNueva 
+										WHERE codDia = @codDia)=(SELECT Dia FROM #DiasSeccion WHERE codDia = @codDia))
+								BEGIN
+					
+									IF(@aula IN (SELECT Au.aula FROM Registro.smregistro.Edificio Ed
+										INNER JOIN Registro.smregistro.Aula	Au
+										ON Ed.codEdificio = Au.codEdificioFF
+											WHERE Ed.codEdificio = @codEdificio 
+												AND Au.aula = @aula
+												AND Au.aula IN (SELECT aula FROM Registro.smregistro.Seccion
+															WHERE codEdificioFF = @codEdificio 
+																AND @horaInicio <= horaInicial   AND @horaFinal>=horaFinal
+							
+																AND @horaInicio<horaFinal)
+
+								  --verificar tambien las secciones de los laboratorios
+												OR Au.aula IN (SELECT aula FROM Registro.smregistro.SeccionLab
+													WHERE codEdificioFF = @codEdificio 
+														AND @horaInicio <= horaInicial  
+														AND @horaFinal>=horaFinal
+							
+														 AND @horaInicio<horaFinal
+										))
+										)
+										BEGIN
+											PRINT 'El aula no está disponible a esta hora y en este dia'
+											COMMIT TRANSACTION
+									
+											RETURN 0;
+										END
+								END
+							DELETE TOP(1) FROM #DiasSeccion
+							SELECT @cantidadDias = COUNT(*) FROM #DiasSeccion
+						END
+			
+				DELETE TOP (1) FROM #Secciones
+				SELECT @cantidadSecciones = COUNT(*) FROM #Secciones;
+
+				END
+			--PRINT 'Aula disponible'
+			--Aqui insertar, aula disponible e iniciar lo del catedratico
+		
+	-------------------------------
+		
+			SET @cantidadClases = (SELECT COUNT([codSeccion]) 
+				FROM [smregistro].[Seccion] 
+					WHERE [codCatedratico]= @codCatedratico) 
+
+			IF(@cantidadClases = 3 OR @codCatedratico NOT IN (SELECT [codCatedratico] FROM smregistro.Catedratico))
+				BEGIN
+				PRINT 'Código de catedrático no existente o ya tiene asignado el número límite de secciones que puede impartir'
+				COMMIT TRANSACTION
+				END
+			ELSE
+				BEGIN
+				/*
+				Verificar que el catedrático no tenga ningun traslape
+				*/
+
+				CREATE TABLE #SeccionesImpartiendo (codSeccion INT, diasImparte VARCHAR(10), horaInicio TIME, horaFinal TIME, codCatedratico VARCHAR(15) 
+					);
+
+				INSERT INTO #SeccionesImpartiendo 
+					SELECT codSeccion, diaPresenciales,horaInicial,horaFinal,codCatedratico FROM smregistro.Seccion WHERE codCatedratico = @codCatedratico
+		
+
+				DECLARE @inicioSeccionCatedratico TIME;
+				DECLARE @FinalSeccionCatedratico TIME;
+				DECLARE @DiasPresencialesCatedratico VARCHAR(12);
+				DECLARE @cantidadImpartiendo INT
+	
+				SELECT @cantidadImpartiendo = COUNT(*) FROM #SeccionesImpartiendo;
+					SAVE TRANSACTION Punto2
+
+				WHILE @cantidadImpartiendo>0
+					BEGIN
+		
+						SELECT @inicioSeccionCatedratico=horaInicial, @FinalSeccionCatedratico = horaFinal, @DiasPresencialesCatedratico=diaPresenciales
+							FROM smregistro.Seccion 
+								WHERE codSeccion = (SELECT TOP(1) codSeccion FROM #SeccionesImpartiendo)
+
+						IF OBJECT_ID('tempdb.dbo.#DiasSeccionImparte', 'U') IS NOT NULL
+								DROP TABLE #DiasSeccionImparte; 
+
+							CREATE TABLE #DiasSeccionImparte (codDia INT PRIMARY KEY, Dia VARCHAR(2));
+							INSERT INTO #DiasSeccionImparte EXEC [smregistro].[spTablaDias] @DiasPresencialesCatedratico;
+				
+						DECLARE @cantidadDiasImparte INT;
+						SELECT @cantidadDiasImparte = COUNT(*) FROM #DiasSeccionImparte;
+						DECLARE @codDiaImparte INT;
+			
+						WHILE @cantidadDiasImparte > 0
 							BEGIN
-							PRINT 'El Catedrático tiene un traslape de horas'	
-							COMMIT TRANSACTION
-                            RETURN 0;
+								SELECT TOP(1) @codDiaImparte = codDia FROM #DiasSeccionImparte
+
+								IF((SELECT Dia 
+									FROM #DiasAsignaturaSeccionNueva 
+										WHERE codDia = @codDiaImparte)=(SELECT Dia FROM #DiasSeccionImparte WHERE codDia = @codDiaImparte))
+									BEGIN					
+									IF(@horaInicio <= @inicioSeccionCatedratico   AND @horaFinal>=@FinalSeccionCatedratico)
+										BEGIN
+											PRINT 'El Catedrático tiene un traslape de horas'	
+												COMMIT TRANSACTION
+											RETURN 0;
+										END
+									END
+								DELETE TOP(1) FROM #DiasSeccionImparte
+								SELECT @cantidadDiasImparte = COUNT(*) FROM #DiasSeccionImparte
 							END
-                        END
-                    DELETE TOP(1) FROM #DiasSeccionImparte
-                    SELECT @cantidadDiasImparte = COUNT(*) FROM #DiasSeccionImparte
-                END
 			
-		DELETE TOP (1) FROM #SeccionesImpartiendo
-		SELECT @cantidadImpartiendo = COUNT(*) FROM #SeccionesImpartiendo;
+					DELETE TOP (1) FROM #SeccionesImpartiendo
+					SELECT @cantidadImpartiendo = COUNT(*) FROM #SeccionesImpartiendo;
 
-		END
-		PRINT 'Todo está bien, Sección agregada'
-		COMMIT TRANSACTION
-		INSERT INTO [smregistro].[Seccion] VALUES (@codSeccion, @codAsignatura, @horaInicio , @horaFinal, @cupos, @codEdificio,
-		@aula, @diasImpartir , @codCatedratico)
+					END
+				PRINT 'Todo está bien, Sección agregada'
+					COMMIT TRANSACTION
+				INSERT INTO [smregistro].[Seccion] 
+					VALUES (
+						@codSeccion, 
+						@codAsignatura, 
+						@horaInicio , 
+						@horaFinal, 
+						@cupos, 
+						@codEdificio,
+						@aula, 
+						@diasImpartir , 
+						@codCatedratico)
 
-		UPDATE [smregistro].[Catedratico] SET [cantidadClases] = [cantidadClases] + 1, [activo] = 1
-		WHERE codCatedratico = @codCatedratico
+				UPDATE [smregistro].[Catedratico] 
+					SET [cantidadClases] = [cantidadClases] + 1, [activo] = 1
+						WHERE codCatedratico = @codCatedratico
 			
-		END
-		END
+				END
+			END
 		ELSE
 		BEGIN
-		PRINT 'La asignatura indicada no es válida'
-		COMMIT TRANSACTION
+			PRINT 'La asignatura indicada no es válida'
+			COMMIT TRANSACTION
 		
 		
 		END

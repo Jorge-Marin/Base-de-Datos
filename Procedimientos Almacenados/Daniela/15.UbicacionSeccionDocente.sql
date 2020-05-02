@@ -8,9 +8,9 @@ GO
 -- ============================================================================================================================
 -- Author:		Bessy Daniela Zavala
 -- Create date: 6-4-2020
--- Description: Muestra el aula y edificio donde imparte o impartió una determinada seccion un docente en un determinado periodo
+-- Description:Muestra el aula y edificio donde imparte o impartió una determinada seccion un docente en un determinado periodo
 -- =============================================================================================================================
-CREATE PROCEDURE [dbo].[seccionDocente]
+CREATE PROCEDURE smregistro.spSeccionDocente
 	@seccionClase int,
 	@codAsignatura VARCHAR(7),
 	@codCatedratico VARCHAR(15)
@@ -20,16 +20,26 @@ BEGIN
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
 
-    IF((SELECT [codSeccion] FROM [smregistro].[Seccion] WHERE @codAsignatura =[codAsignatura] AND @seccionClase = [codSeccion] AND 
-		@codCatedratico = [codCatedratico]) IS NOT NULL)
+    IF((SELECT [codSeccion] 
+		FROM [smregistro].[Seccion] 
+			WHERE @codAsignatura =[codAsignatura] 
+				AND @seccionClase = [codSeccion] 
+				AND @codCatedratico = [codCatedratico]) IS NOT NULL)
 		BEGIN 
-			SELECT  [codSeccion],[codAsignatura],[nombreEdificio],[aula] FROM [smregistro].[Seccion] INNER JOIN [smregistro].[Edificio] 
-			ON smregistro.Seccion.codEdificioFF = smregistro.Edificio.codEdificio
-			WHERE @codCatedratico = [codCatedratico] AND @seccionClase = [codSeccion] AND @codAsignatura = [codAsignatura]
-		END
+			SELECT  S.codSeccion,
+					S.codAsignatura,
+					E.nombreEdificio,
+					S.aula
+				FROM smregistro.Seccion AS S
+					INNER JOIN smregistro.Edificio AS E
+						ON S.codEdificioFF = E.codEdificio
+							WHERE @codCatedratico = [codCatedratico] 
+								AND @seccionClase = [codSeccion]
+								AND @codAsignatura = [codAsignatura]
+		END	
 	ELSE
 		BEGIN
-		PRINT 'El docente con el código proporcionado no tiene clases asignadas en ese periodo'
+			PRINT 'El docente con el código proporcionado no tiene clases asignadas en ese periodo'
 		END
 END
 
