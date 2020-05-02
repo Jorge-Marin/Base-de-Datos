@@ -39,7 +39,7 @@ BEGIN
         BEGIN 
             /*Procedimiento para calcular el indice global*/
             DECLARE @indiceGlobal INT
-            EXEC @indiceGlobal = [smregistro].[spIndiceGlobal] @cuentaEstudiante, @codigoCarrera;
+            SET @indiceGlobal = (SELECT [smregistro].[getGlobalIndex] (@cuentaEstudiante, @codigoCarrera));
 
             DECLARE @numAsignaturasAprobadas INT;
             SET @numAsignaturasAprobadas = (SELECT COUNT(DISTINCT(codAsignatura)) FROM Registro.smregistro.HistorialAcademico
@@ -94,8 +94,7 @@ BEGIN
 
             /*Matricula por indice de Periodo*/
             DECLARE @indicePeriodo INT
-            EXEC @indicePeriodo = [smregistro].[spIndicePeriodo] @codigoCarrera , @cuentaEstudiante;
-
+            SET @indicePeriodo = (SELECT [smregistro].[getIndexPeriod] (@cuentaEstudiante, @codigoCarrera));
 
             /*Donde el indice este entre 81 a 100*/
             IF(81<=@indicePeriodo AND @indicePeriodo<=100)
@@ -128,8 +127,3 @@ END
 GO
 
 [smregistro].[Prematricula] '20171004244', 'IS01', 'IS-110', 1000, '2020-05-05', 3;
-
-SELECT * FROM Registro.smregistro.MatriculaClase
- 
-
-

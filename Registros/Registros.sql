@@ -460,6 +460,7 @@ INSERT INTO Registro.smregistro.Asignatura VALUES('IN-102',
 												  0,
 												  '01LE');
 
+
 SELECT * FROM Registro.smregistro.Asignatura
 
 
@@ -501,7 +502,9 @@ INSERT INTO Registro.smregistro.Seccion VALUES (0900,'MM-111','09:00:00','10:00:
 INSERT INTO Registro.smregistro.Seccion VALUES (1000,'IS-110','10:00:00','11:00:00',25,4,'Laboratorio 2 (IS)','LuMaMi','102')
 INSERT INTO Registro.smregistro.Seccion VALUES (1100,'FS-100','11:00:00','12:00:00',25,10,'203','LuMaMiJuVi','102')
 INSERT INTO Registro.smregistro.Seccion VALUES (1200,'MM-201','12:00:00','13:00:00',25,10,'105','LuMaMiJuVi','102')
-
+INSERT INTO Registro.smregistro.Seccion VALUES (1000, 'MM-110','10:00:00','11:00:00',25,9,'305','LuMaMiJuVi','102')
+INSERT INTO Registro.smregistro.Seccion VALUES (1000, 'MM-110','10:00:00','11:00:00',25,9,'305','LuMaMiJuVi','102')
+INSERT INTO Registro.smregistro.Seccion VALUES (0900, 'IN-102','09:00:00','13:00:00',25,1,'101','Mi','102')
 
 SELECT * FROM Registro.smregistro.Edificio
 SELECT * FROM Registro.smregistro.Aula

@@ -2,9 +2,9 @@
 -- Author:		Jorge Arturo Reyes Marin
 -- Create date: 12/04/2020
 -- Description:	Verifica que no exista un traslape entre asignaturas
--- A matricular
+-- A matricular.
 -- =============================================
-CREATE PROCEDURE  [smregistro].[spTraslapeClase]
+ALTER PROCEDURE  [smregistro].[spTraslapeClase]
 	@codSeccion AS INT,
     @codAsignatura AS VARCHAR(7),
     @codCarrera AS VARCHAR(7),
@@ -15,10 +15,14 @@ BEGIN
 	SET NOCOUNT ON;
 
     DECLARE @asignaturaInicio AS TIME;
+    DECLARE @asignaturaFinal AS TIME;
     DECLARE @DiasPresenciales AS VARCHAR(12);
 
     /*Obteniendo la hora de inicio de la clase a matricular*/
-    SELECT @asignaturaInicio = Se.horaInicial, @DiasPresenciales = Se.diaPresenciales FROM Registro.smregistro.Seccion Se
+    SELECT @asignaturaInicio = Se.horaInicial,
+           @asignaturaFinal = Se.horaFinal, 
+           @DiasPresenciales = Se.diaPresenciales 
+    FROM Registro.smregistro.Seccion Se
         WHERE Se.codSeccion = @codSeccion
         AND Se.codAsignatura =  @codAsignatura 
 
@@ -27,9 +31,9 @@ BEGIN
     los dias presenciales y los devuelve a una tabla de los dias de 
     la clase*/
     IF OBJECT_ID('tempdb.dbo.#DiasAsignaturaInteres', 'U') IS NOT NULL
-                DROP TABLE #DiasAsignaturaInteres; 
-            CREATE TABLE #DiasAsignaturaInteres (codDia INT PRIMARY KEY, Dia VARCHAR(2));
-            INSERT INTO #DiasAsignaturaInteres EXEC [smregistro].[spTablaDias] @DiasPresenciales;
+            DROP TABLE #DiasAsignaturaInteres; 
+        CREATE TABLE #DiasAsignaturaInteres (codDia INT PRIMARY KEY, Dia VARCHAR(2));
+        INSERT INTO #DiasAsignaturaInteres EXEC [smregistro].[spTablaDias] @DiasPresenciales;
 
     /*Creando una tabla temporal de las asignaturas ya matriculadas
     en el periodo de matricula actual*/
@@ -85,7 +89,8 @@ BEGIN
                     SELECT TOP(1) @codDia = codDia FROM #DiasAsignatura
                     IF((SELECT Dia FROM #DiasAsignaturaInteres WHERE codDia = @codDia)=(SELECT Dia FROM #DiasAsignatura WHERE codDia = @codDia))
                         BEGIN 
-                            IF(@asignaturaInicio = @inicioMatriculada OR @inicioMatriculada<@asignaturaInicio AND @asignaturaInicio<@finalMatriculada)
+                            IF(@asignaturaInicio = @inicioMatriculada OR @inicioMatriculada<@asignaturaInicio AND @asignaturaInicio<@finalMatriculada
+                            OR @asignaturaInicio<@inicioMatriculada AND @finalMatriculada<@asignaturaFinal)
                                 BEGIN 
                                     RETURN 1;
                                 END
@@ -102,4 +107,10 @@ BEGIN
     RETURN 0      
 END
 GO
+
+
+DECLARE @response INT;
+EXEC @response = [smregistro].[spTraslapeClase] 0700, 'SC-101', 'IS01', '20171004244', '2020-05-05'
+PRINT CAST((@response) AS CHAR(5))
+
 
