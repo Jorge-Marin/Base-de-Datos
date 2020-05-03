@@ -16,23 +16,55 @@ BEGIN
 
     DECLARE @inicioPrematricula AS DATE; 
     DECLARE @finalPrematricula AS DATE;
+    DECLARE @inicioMatricula AS DATE;
+    DECLARE @finalMatricula AS DATE;
+    DECLARE @fechaInicio AS DATE;
+    DECLARE @fechaFinal AS DATE;
+    DECLARE @tipomatricula AS VARCHAR(20);
 
-    SET @inicioPrematricula = (SELECT Pe.inicioPrematricula FROM Registro.smregistro.Periodo Pe 
-                                WHERE activo = 1);
-    SET @finalPrematricula = (SELECT Pe.finalPrematricula FROM Registro.smregistro.Periodo Pe 
-                                WHERE activo = 1);
 
-    IF(GETDATE()<CAST(@inicioPrematricula AS DATE))
+    SELECT @inicioPrematricula = Pe.inicioPrematricula,
+           @finalPrematricula = Pe.finalPrematricula,
+           @inicioMatricula = Pe.inicioMatricula,
+           @finalMatricula = Pe.finalMatricula 
+           FROM Registro.smregistro.Periodo Pe 
+                WHERE activo = 1;
+
+    IF(@inicioMatricula<= GETDATE() AND GETDATE()<= @finalMatricula)
+        BEGIN
+            DECLARE @estadoCuenta BIT;
+            SET @estadoCuenta = (SELECT smregistro.accountStatus (@cuentaEstudiante));
+            IF(@estadoCuenta = 0)
+                BEGIN 
+                    PRINT 'Aun no ha cancelado la matricula'
+                    RETURN;
+                END
+            ELSE 
+                BEGIN 
+                    SET @fechaInicio = @inicioMatricula;
+                    SET @fechaFinal = @finalMatricula;
+                    SET @tipomatricula = 'Matricula';
+                END
+        END
+    ELSE 
+        BEGIN 
+            SET @fechaInicio = @inicioPrematricula;
+            SET @fechaFinal = @finalPrematricula;
+            SET @tipomatricula = 'Prematricula';
+        END
+
+
+    IF(GETDATE()<CAST(@fechaInicio AS DATE))
         BEGIN
             PRINT CONCAT('El periodo de prematricula comezara en', 
-                        DATEDIFF(DAY, GETDATE(), @inicioPrematricula),' Dias de 9:00 a.m. a 11:59 p.m.');
+                        DATEDIFF(DAY, GETDATE(), @fechaInicio),' Dias de 9:00 a.m. a 11:59 p.m.');
             RETURN
         END
     
-    IF(GETDATE()>CAST(@finalPrematricula AS DATE))
+    IF(GETDATE()>CAST(@fechaFinal AS DATE))
         BEGIN
             PRINT CONCAT('El periodo de prematricula acabo hace ', 
-                            DATEDIFF(DAY, @finalPrematricula, GETDATE()),' Dias');
+                            DATEDIFF(DAY, @fechaFinal, GETDATE()),' Dias');
             RETURN
         END
 
@@ -54,7 +86,7 @@ BEGIN
             IF(@indiceGlobal>=80 AND @numAsignaturasAprobadas>=10)
                 BEGIN
                     EXECUTE [smregistro].[spMatriculaPrioridad] @cuentaEstudiante, @codigoCarrera, 
-                    @codAsigMatriculada, @codSeccion, @fechaPeriodo,@codperiodo, 1, @inicioPrematricula, @finalPrematricula;
+                    @codAsigMatriculada, @codSeccion, @fechaPeriodo,@codperiodo, 1, @fechaInicio, @fechaFinal;
                     RETURN;
                 END
 
@@ -66,7 +98,7 @@ BEGIN
             IF(@PROSENE>0)
                 BEGIN 
                     EXEC [smregistro].[spMatriculaPrioridad] @cuentaEstudiante, @codigoCarrera, 
-                        @codAsigMatriculada, @codSeccion, @fechaPeriodo,@codperiodo, 1,  @inicioPrematricula, @finalPrematricula;
+                        @codAsigMatriculada, @codSeccion, @fechaPeriodo,@codperiodo, 1,  @fechaInicio, @fechaFinal;
                     RETURN;
                 END
             
@@ -79,7 +111,7 @@ BEGIN
             IF(@representanteUNAH>0)
                 BEGIN 
                     EXEC [smregistro].[spMatriculaPrioridad] @cuentaEstudiante, @codigoCarrera, 
-                        @codAsigMatriculada, @codSeccion, @fechaPeriodo,@codperiodo, 1, @inicioPrematricula, @finalPrematricula;
+                        @codAsigMatriculada, @codSeccion, @fechaPeriodo,@codperiodo, 1, @fechaInicio, @fechaFinal;
                     RETURN;
                 END
 
@@ -90,7 +122,7 @@ BEGIN
             IF(@indiceGlobal=0 AND @numAsignaturasAprobadas=0 AND SUBSTRING (@cuentaEstudiante,1,4)=CAST(YEAR(GETDATE()) AS VARCHAR(4)))
                 BEGIN  
                     EXEC [smregistro].[spMatriculaPrioridad] @cuentaEstudiante, @codigoCarrera, 
-                    @codAsigMatriculada, @codSeccion, @fechaPeriodo,@codperiodo, 2,  @inicioPrematricula, @finalPrematricula;
+                    @codAsigMatriculada, @codSeccion, @fechaPeriodo,@codperiodo, 2,  @fechaInicio, @fechaFinal;
                     RETURN;
                 END
 
@@ -102,7 +134,7 @@ BEGIN
             IF(81<=@indicePeriodo AND @indicePeriodo<=100)
                 BEGIN 
                     EXEC [smregistro].[spMatriculaPrioridad] @cuentaEstudiante, @codigoCarrera, @codAsigMatriculada, 
-                                        @codSeccion, @fechaPeriodo,@codperiodo, 3, @inicioPrematricula, @finalPrematricula;
+                                        @codSeccion, @fechaPeriodo,@codperiodo, 3, @fechaInicio, @fechaFinal;
                     RETURN;
                 END
 
@@ -110,7 +142,7 @@ BEGIN
             IF(73<=@indicePeriodo AND @indicePeriodo<81)
                 BEGIN
                     EXEC [smregistro].[spMatriculaPrioridad] @cuentaEstudiante, @codigoCarrera, 
-                        @codAsigMatriculada, @codSeccion, @fechaPeriodo,@codperiodo, 4,  @inicioPrematricula, @finalPrematricula;
+                        @codAsigMatriculada, @codSeccion, @fechaPeriodo,@codperiodo, 4,  @fechaInicio, @fechaFinal;
                     RETURN;
                 END
 
@@ -119,7 +151,7 @@ BEGIN
             IF(0<=@indicePeriodo AND @indicePeriodo<73)
                 BEGIN 
                     EXEC [smregistro].[spMatriculaPrioridad] @cuentaEstudiante, @codigoCarrera, 
-                    @codAsigMatriculada, @codSeccion, @fechaPeriodo,@codperiodo, 5,  @inicioPrematricula, @finalPrematricula;
+                    @codAsigMatriculada, @codSeccion, @fechaPeriodo,@codperiodo, 5,  @fechaInicio, @fechaFinal;
                     RETURN;
                 END  
         END
