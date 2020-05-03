@@ -4,16 +4,22 @@
 -- Description:	Retorna el valor de la cuenta del estudiante
 -- segun su numero de carreras o si es de primer ingreso
 -- =============================================
-CREATE FUNCTION smregistro.accountStatus
+ALTER FUNCTION smregistro.accountStatus
 (
 	@numeroCuenta VARCHAR(15)
 )
-RETURNS DECIMAL(5,2)
+RETURNS BIT
 AS
 BEGIN
+		DECLARE @estadoCuenta DECIMAL(5,2);
 		DECLARE @cantidadCarrera INT;
 		DECLARE @primerIngreso INT;
+		DECLARE @estado BIT;
 		DECLARE @value DECIMAL(5,2);
+
+		SET @estadoCuenta = (SELECT estadoCuenta 
+							 FROM Registro.smregistro.Estudiante 
+							 WHERE numCuenta = '20171004244');		
 
 		SET @primerIngreso = (SELECT COUNT(cuentaEstudiante) FROM Registro.smregistro.HistorialAcademico 
 								WHERE cuentaEstudiante= @numeroCuenta);
@@ -22,27 +28,30 @@ BEGIN
 		SET @cantidadCarrera = (SELECT COUNT(DISTINCT(codCarrera)) FROM Registro.smregistro.MatriculaCarrera 
 								WHERE cuentaEstudiante = @numeroCuenta);
 
-		IF(@primerIngreso=0 AND SUBSTRING (@numeroCuenta,1,4) = CAST(YEAR(GETDATE()) AS VARCHAR(4)))
+		IF(@primerIngreso=0 AND SUBSTRING (@numeroCuenta,1,4) <= CAST(YEAR(GETDATE()) AS VARCHAR(4)))
 			BEGIN 
 				SET @value = 410;
-				RETURN @value;
 			END
 
 		IF(@cantidadCarrera=1 AND @primerIngreso>0)
 			BEGIN 
 				SET @value = 270;
-				RETURN @value;
 			END
 
 		IF(@cantidadCarrera=2 AND @primerIngreso>0)
 			BEGIN 
 				SET @value = 540;
-				RETURN @value;
+			END
+
+		IF(@estadoCuenta = @value)
+			BEGIN 
+				SET @estado = 1;
+			END
+		ELSE 
+			BEGIN 
+				SET @estado = 0;
 			END
 		
-		RETURN 404;
+		RETURN @estado;
 END
 GO
-
-
---PRINT CAST([smregistro].[accountStatus] ('20171004244') AS CHAR(7));

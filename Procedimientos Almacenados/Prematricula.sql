@@ -15,10 +15,12 @@ BEGIN
 	SET NOCOUNT ON;
 
     DECLARE @inicioPrematricula AS DATE; 
-    DECLARE @finalPrematricula AS DATE; 
+    DECLARE @finalPrematricula AS DATE;
 
-    SET @inicioPrematricula = (SELECT Pe.inicioPrematricula FROM Registro.smregistro.Periodo Pe WHERE activo = 1);
-    SET @finalPrematricula = (SELECT Pe.finalPrematricula FROM Registro.smregistro.Periodo Pe WHERE activo = 1);
+    SET @inicioPrematricula = (SELECT Pe.inicioPrematricula FROM Registro.smregistro.Periodo Pe 
+                                WHERE activo = 1);
+    SET @finalPrematricula = (SELECT Pe.finalPrematricula FROM Registro.smregistro.Periodo Pe 
+                                WHERE activo = 1);
 
     IF(GETDATE()<CAST(@inicioPrematricula AS DATE))
         BEGIN
@@ -127,3 +129,5 @@ END
 GO
 
 [smregistro].[Prematricula] '20171004244', 'IS01', 'IS-110', 1000, '2020-05-05', 3;
+
+SELECT * FROM Registro.smregistro.Periodo
