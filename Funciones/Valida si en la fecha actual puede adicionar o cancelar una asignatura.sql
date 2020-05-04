@@ -15,8 +15,10 @@ BEGIN
 	DECLARE @beginAditions DATE;
 	DECLARE @endAditios DATE;
 
-	SELECT @beginAditions=inicioAdiciones, @endAditios=finalizaAdiciones 
-	FROM Registro.smregistro.Periodo WHERE activo = 1;
+	SELECT @beginAditions=inicioAdiciones, 
+		   @endAditios=finalizaAdiciones 
+		   FROM Registro.smregistro.Periodo 
+		   WHERE activo = 1;
 
 	IF(@beginAditions<=@currentDate AND @currentDate<=@endAditios)
 		BEGIN 

@@ -19,7 +19,7 @@ BEGIN
 
 		SET @estadoCuenta = (SELECT estadoCuenta 
 							 FROM Registro.smregistro.Estudiante 
-							 WHERE numCuenta = '20171004244');		
+							 WHERE numCuenta = @numeroCuenta);		
 
 		SET @primerIngreso = (SELECT COUNT(cuentaEstudiante) FROM Registro.smregistro.HistorialAcademico 
 								WHERE cuentaEstudiante= @numeroCuenta);
