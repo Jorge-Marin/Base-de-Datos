@@ -216,10 +216,13 @@ CREATE TABLE Registro.smregistro.SeccionLab(
 						codEdificioFF int,
 						codAula VARCHAR(20),
 						codInstructor VARCHAR(15),
+						codPeriodo INT ,
+						fechaPeriodo DATE,
 						PRIMARY KEY(codSeccion,codLab),
 						FOREIGN KEY(codLab,codAsignatura) REFERENCES Registro.smregistro.Laboratorio(codLaboratorio,codAsignatura),
 						FOREIGN KEY(codAula,codEdificioFF) REFERENCES Registro.smregistro.Aula(aula,codEdificioFF),
-						FOREIGN KEY(codInstructor) REFERENCES Registro.smregistro.Instructor(codInstructor)
+						FOREIGN KEY(codInstructor) REFERENCES Registro.smregistro.Instructor(codInstructor),
+						FOREIGN KEY(codPeriodo,fechaPeriodo) REFERENCES Registro.smregistro.Periodo(codPeriodo,fechaInicio)
 )
 GO
 
@@ -234,6 +237,8 @@ CREATE TABLE Registro.smregistro.Seccion(
 						aula VARCHAR(20),
 						diaPresenciales VARCHAR(10) NOT NULL,
 						codCatedratico VARCHAR(15),
+						codPeriodo INT ,
+						fechaPeriodo DATE,
 						PRIMARY KEY(codSeccion,codAsignatura),
 						FOREIGN KEY(codAsignatura) REFERENCES Registro.smregistro.Asignatura(codAsignatura),
 						FOREIGN KEY(aula,codEdificioFF) REFERENCES Registro.smregistro.Aula(aula,codEdificioFF),
