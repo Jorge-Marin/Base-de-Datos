@@ -11,7 +11,7 @@ CREATE FUNCTION smregistro.fnCantClasesAprobadas
 RETURNS VARCHAR(100) 
 AS
 BEGIN
-	DECLARE @retorno VARCHAR(100);
+	DECLARE @retorno INT;
 	DECLARE @porcentaje INT;
 	
 	SET @retorno = (SELECT COUNT([cuentaEstudiante]) 'Cantidad de Clases Aprobadas'
@@ -29,4 +29,3 @@ BEGIN
 END
 GO
 --PRINT [dbo].[fnCantClasesAprobadas]('20171004244','IS01')
-
