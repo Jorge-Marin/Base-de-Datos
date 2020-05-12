@@ -49,6 +49,7 @@ SELECT Est.numCuenta 'Cuenta',
 /*
 	3. Mostrar el numero de veces que cursó la clase de MM-110, el estudiante con cuenta 20171004244
 */
+
 	SELECT COUNT(*) AS 'Cantidad de veces cursada',
 				Es.numCuenta,
 				Es.primerNombre + ' '+Es.primerApellido 'Nombre'
