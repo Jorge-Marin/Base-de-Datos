@@ -1,0 +1,25 @@
+{
+	"folders": [
+		{
+			"path": "..\\BDRegistro"
+		},
+		{
+			"path": "..\\Funciones"
+		},
+		{
+			"path": "."
+		},
+		{
+			"path": "..\\Registros"
+		},
+		{
+			"path": "..\\Transacciones"
+		},
+		{
+			"path": "..\\Triggers"
+		},
+		{
+			"path": "..\\Vistas"
+		}
+	]
+}
