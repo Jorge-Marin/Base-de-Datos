@@ -1,30 +1,11 @@
-USE [Registro]
-GO
--- ================================================
--- Template generated from Template Explorer using:
--- Create Inline Function (New Menu).SQL
---
--- Use the Specify Values for Template Parameters 
--- command (Ctrl-Shift-M) to fill in the parameter 
--- values below.
---
--- This block of comments will not be included in
--- the definition of the function.
--- ================================================
-
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 -- =============================================
 -- Author:		Bessy Daniela Zavala
 -- Create date: 23-04-2020
--- Description:	Función que retorne la forma 03 de un estudiante específico
+-- Description:	Funciï¿½n que retorne la forma 03 de un estudiante especï¿½fico
 -- =============================================
 
 CREATE FUNCTION smregistro.FnProgramacionAcademica
 (	 
-	-- Add the parameters for the function here
 	@codCarrera Varchar(7)
 )
 RETURNS TABLE 
@@ -35,11 +16,11 @@ RETURN
 	SELECT D.nombreDepartamento 'Departamento', 
 			A.nombreAsignatura 'Asignatura',
 			S.diaPresenciales 'Dias', 
-			S.codSeccion 'Sección', 
+			S.codSeccion 'Secciï¿½n', 
 			S.horaInicial 'HoraInicial',
 			S.horaFinal 'HoraFinal',
 			Pe.periodo 'Periodo',
-			YEAR(Pe.fechaInicio) 'Año'
+			YEAR(Pe.fechaInicio) 'Aï¿½o'
 		FROM Registro.smregistro.DepartamentosCarrera AS D
 			INNER JOIN Registro.smregistro.Asignatura AS A
 				ON D.codDepartamento = A.codDepartamentoFF
@@ -52,12 +33,12 @@ RETURN
 			WHERE C.codCarreraFF = @codCarrera
 				AND Pe.activo = 1
 				/*
-					Suponiendo que la programación académica está disponible 15 dias antes de iniciar matricula
+					Suponiendo que la programaciï¿½n acadï¿½mica estï¿½ disponible 15 dias antes de iniciar matricula
 				*/
 				AND DATEDIFF(DAY,GETDATE(),Pe.inicioPrematricula) <=15
 
 				/*
-					Suponiendo que el dia de inicio del periodo se desactiva la visualización de la programación académica
+					Suponiendo que el dia de inicio del periodo se desactiva la visualizaciï¿½n de la programaciï¿½n acadï¿½mica
 				*/
 				AND GETDATE() <= Pe.fechaInicio
 GO
