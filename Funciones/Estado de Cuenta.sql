@@ -1,10 +1,12 @@
+USE Registro
+GO
 -- =============================================
 -- Author:		Jorge Arturo Reyes Marin
 -- Create date: 15/04/2020
 -- Description:	Retorna el valor de la cuenta del estudiante
 -- segun su numero de carreras o si es de primer ingreso
 -- =============================================
-ALTER FUNCTION smregistro.accountStatus
+CREATE FUNCTION smregistro.accountStatus
 (
 	@numeroCuenta VARCHAR(15)
 )

@@ -1,8 +1,10 @@
+USE Registro
+GO
 -- =============================================
 -- Author:		Jorge Marin
 -- Create date: 21/04/2020
--- Description:	Calcula el indice del ultimo periodo estudiado, resiviendo la 
--- el codigo de la carrera y el numero de cuenta
+-- Description:	Calcula el índice del último periodo estudiado, recibiendo 
+-- el código de la carrera y el número de cuenta
 -- =============================================
 CREATE FUNCTION  smregistro.getIndexPeriod
 (	

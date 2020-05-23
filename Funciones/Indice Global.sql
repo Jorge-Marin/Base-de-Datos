@@ -1,3 +1,5 @@
+USE Registro
+GO
 -- =============================================
 -- Author:		Jorge Marin
 -- Create date: 21/04/2020
