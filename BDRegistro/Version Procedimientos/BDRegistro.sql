@@ -446,6 +446,7 @@ CREATE TABLE Registro.smregistro.MatriculaLab(
 								codLab VARCHAR(7),
 								codAsignatura VARCHAR(7),
 								codSeccionLab INT,
+								calificacion INT,
 								PRIMARY KEY(codCarrera,cuentaEstudiante,codLab),
 								FOREIGN KEY(codCarrera) REFERENCES Registro.smregistro.Carrera(codCarrera),
 								FOREIGN KEY(cuentaEstudiante) REFERENCES Registro.smregistro.Estudiante(numCuenta),
@@ -525,3 +526,4 @@ CREATE TABLE Registro.smregistro.TelefonoEstudiante(
 )
 GO
 
+-

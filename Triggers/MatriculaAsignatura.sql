@@ -3,7 +3,7 @@
 -- Create date: 07/04/2020
 -- Description:	Matricula Asignatura
 -- =============================================
-ALTER TRIGGER  [smregistro].[trMatriculaAsignatura]
+CREATE TRIGGER  [smregistro].[trMatriculaAsignatura]
    ON  [smregistro].[MatriculaClase]
    AFTER INSERT
 AS 
@@ -40,8 +40,7 @@ BEGIN
 					SET @uvDisponible = (SELECT unidadesValorativas FROM Registro.smregistro.Estudiante 
 														WHERE numCuenta = @cuentaEstudiante)
 
-					/*Verifica si ya aprobo la asignatura,
-					por si acaso*/
+					/*Verifica si ya aprobo la asignatura,*/
 					DECLARE @aprobada INT;
 					SET @aprobada = (SELECT COUNT(DISTINCT(codAsignatura)) FROM Registro.smregistro.HistorialAcademico
 												WHERE codCarrera = @codigoCarrera

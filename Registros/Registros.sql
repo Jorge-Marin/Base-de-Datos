@@ -333,12 +333,12 @@ INSERT INTO Registro.smregistro.HistorialAcademico
 	VALUES('IS01','20171004244','SC-101', 700 ,1,'2020-04-20',90,'Aprobado')
 INSERT INTO Registro.smregistro.HistorialAcademico 
 	VALUES('IS01','20171004244','MM-110',800,1,'2020-04-20',80,'Aprobado')
-	/*
+	
 INSERT INTO Registro.smregistro.HistorialAcademico 
 	VALUES('IS01','20171004244','MM-111',0900,1,'2020-01-20',90,'Aprobado')
 INSERT INTO Registro.smregistro.HistorialAcademico 
 	VALUES('IS01','20171004244','IS-110',1000,1,'2020-01-20',80,'Aprobado')
-	*/
+	
 
 SELECT * FROM Registro.smregistro.HistorialAcademico
 
@@ -415,3 +415,5 @@ INSERT INTO Registro.smregistro.TelefonoEmpleado VALUES('020','98643235')
 INSERT INTO Registro.smregistro.TelefonoEstudiante VALUES('20171004244','98463756')
 INSERT INTO Registro.smregistro.TelefonoEstudiante VALUES('20171004244','87654326')
 
+
+SELECT * FROM Registro.smregistro.HistorialAcademico;

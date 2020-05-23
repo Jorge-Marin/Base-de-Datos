@@ -4,6 +4,7 @@
 -- Description: Cuando se terminen el periodo academico
 -- se debe eliminar los registros de la tabla matricula 
 -- y mudar los a la tabla historial academico
+-- En combinacion con un Job
 -- =============================================
 CREATE TRIGGER [smregistro].[trFinalizePeriod]
    ON  [smregistro].[MatriculaClase]
@@ -12,6 +13,7 @@ AS
 BEGIN
 	DECLARE @currentDate DATE;
 	DECLARE @finalizaPeriodo DATE;
+	DECLARE @obs VARCHAR(6);
 
 	SET @currentDate = (SELECT GETDATE());
 	SET @finalizaPeriodo = (SELECT fechaFinal FROM Registro.smregistro.Periodo 
@@ -21,6 +23,11 @@ BEGIN
 	
 	IF(CAST(@currentDate AS VARCHAR(12)) = @finalizaPeriodo)
 		BEGIN
+			/*
+			El valor de observacion osea, APR, RPD, N/D, y otros
+			se especifican desde un front end, y se actualizan en la tabla matricula, 
+			y se pasa ese valor a observacion del Historial Academico.
+			*/
 			INSERT INTO Registro.smregistro.HistorialAcademico(
 																codCarrera,
 																cuentaEstudiante,
@@ -39,6 +46,7 @@ BEGIN
 																	   calificacion,
 																	   observaciones
 																	FROM deleted As De
+
 		END
 END
 GO
