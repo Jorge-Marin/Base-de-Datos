@@ -1,5 +1,5 @@
 /*
-	1. Mostrar los estudiantes que aprobaron una la clase de MM-110 en el en a�o 2020 con nota mayor a 75
+	1. Mostrar los estudiantes que aprobaron la clase de MM-110 en el en año 2020 con nota mayor a 75
 */
 
 SELECT Es.numCuenta 'Cuenta', 
@@ -100,7 +100,7 @@ SELECT Es.numCuenta 'Cuenta',
 						Es.primerNombre + Es.primerApellido
 
     /*
-	 6.	Trae a los estudiantes de primer ingreso con sus respectivos correos de gmail
+	 6.	Trae a los estudiantes de primer ingreso con sus respectivos correos personales
 		y su lugar de nacimiento junto con la carrera que estudia
 	*/
 
