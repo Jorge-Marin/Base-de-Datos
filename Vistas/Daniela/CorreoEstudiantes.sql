@@ -11,8 +11,8 @@ CREATE VIEW smregistro.ViewCorreoEstudiantes AS
 			numCuenta AS Cuenta,
 			correo AS Correo,
 			tipo AS TipoCorreo
-	FROM smregistro.Estudiante AS e
-		INNER JOIN smregistro.CorreoEstudiante AS c
+	FROM Registro.smregistro.Estudiante AS e
+		INNER JOIN Registro.smregistro.CorreoEstudiante AS c
 			ON e.numCuenta = c.codUsuario
 
 	

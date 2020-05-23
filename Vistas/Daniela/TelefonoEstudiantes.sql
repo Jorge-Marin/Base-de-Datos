@@ -10,7 +10,7 @@ CREATE VIEW smregistro.viewTelefonoEstudiantes AS
 	SELECT DISTINCT (primerNombre+' '+segundoNombre+' '+primerApellido+' '+segundoApellido) AS Nombre,
 				numCuenta AS Cuenta,
 				telefono AS Teléfono
-		FROM smregistro.Estudiante AS e
-			INNER JOIN smregistro.TelefonoEstudiante AS t
+		FROM Registro.smregistro.Estudiante AS e
+			INNER JOIN Registro.smregistro.TelefonoEstudiante AS t
 				ON e.numCuenta = t.codUsuario
 

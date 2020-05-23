@@ -11,6 +11,6 @@ CREATE VIEW smregistro.ViewCorreoEmpleados AS
 			codEmpleado AS Código,
 			correo AS Correo,
 			tipo AS TipoCorreo
-	FROM smregistro.Empleado AS e
-		INNER JOIN smregistro.CorreoEmpleado AS c
+	FROM Registro.smregistro.Empleado AS e
+		INNER JOIN Registro.smregistro.CorreoEmpleado AS c
 			ON e.codEmpleado = c.codUsuario
