@@ -1,3 +1,5 @@
+USE Registro
+GO
 -- =============================================
 -- Author:		Bessy Daniela Zavala Licona
 -- Create date: 24-04-2020
@@ -11,7 +13,7 @@ RETURN
 (	
 	
 	SELECT Pe.periodo 'Periodo', 
-	       YEAR(Pe.fechaInicio) 'a�o',
+	       YEAR(Pe.fechaInicio) 'año',
 		   Pe.fechaInicio 'Fecha de Inicio', 
 		   Pe.fechaFinal 'Fecha Final' 
 		FROM Registro.smregistro.Periodo AS Pe
