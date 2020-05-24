@@ -1,7 +1,10 @@
 -- =============================================
 -- Author:		Jorge Arturo Reyes Marin
 -- Create date: 12/04/2020
--- Description:	Prematricula
+-- Description:	Prematricula sin haber cancelado la matricula, y verifica 
+-- si es su dia de matricula, tambien verifica si es tiempo de matricula y 
+-- si ya ha cancelado el estado de cuenta, si no lo ha cancelado no podra 
+-- matricular la asignatura.
 -- =============================================
 CREATE PROCEDURE  [smregistro].[Prematricula]
     @cuentaEstudiante AS VARCHAR(15),
@@ -159,7 +162,7 @@ BEGIN
         PRINT 'El periodo de prematricula estara habilitado de 9:00 a.m. a 11:59 p.m.'    
 END
 GO
-
+/*
 [smregistro].[Prematricula] '20171004244', 'IS01', 'IS-110', 1000, '2020-05-05', 3;
 
-SELECT * FROM Registro.smregistro.Periodo
+

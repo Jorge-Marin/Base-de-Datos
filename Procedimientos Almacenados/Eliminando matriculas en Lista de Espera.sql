@@ -62,7 +62,3 @@ GO
 
 [smregistro].[spFinalizacionAdiciones] 
 
-/*SELECT * FROM Registro.smregistro.Periodo
-UPDATE Registro.smregistro.Periodo SET  inicioAdiciones = '2020-05-07',
-										finalizaAdiciones = '2020-05-12'
-										WHERE activo = 1;*/

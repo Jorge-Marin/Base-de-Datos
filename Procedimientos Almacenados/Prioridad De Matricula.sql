@@ -3,7 +3,7 @@
 -- Create date: 12/04/2020
 -- Description:	Prioridad de Matricula
 -- =============================================
-ALTER PROCEDURE  [smregistro].[spMatriculaPrioridad]
+CREATE PROCEDURE  [smregistro].[spMatriculaPrioridad]
 	@cuentaEstudiante AS VARCHAR(15),
 	@codigoCarrera AS VARCHAR(7),
 	@codAsigMatriculada AS VARCHAR(7),
@@ -19,8 +19,8 @@ BEGIN
 
     DECLARE @fecha AS DATE;
 
-    /*Tabla temporal que requiere una fecha de inicio y final de prematricula
-    para generar las fechas entres dichas fechas*/
+    /*Tabla temporal que requiere una fecha de inicio y final de
+    para generar las fechas entre ese intervalo*/
     IF OBJECT_ID('tempdb.dbo.#FechasPrioriMatricula', 'U') IS NOT NULL
                 DROP TABLE #FechasPrioriMatricula; 
             CREATE TABLE #FechasPrioriMatricula (prioridad INT PRIMARY KEY,fecha DATE);
@@ -35,7 +35,7 @@ BEGIN
     IF(CAST(GETDATE() AS DATE) = @fecha)
         BEGIN
             /*Ejecucion de un procedimiento almacenado que verifica que la clase no interfiera
-	        a la misma de una matriculada, tambien considera traslapes con los dias sabados,
+	        con la hora de una asignatura matriculada, tambien considera traslapes con los dias sabados,
 	        y con clases que cuente con mas de una hora diaria*/
 	        DECLARE @traslapeClase int
 	        EXEC @traslapeClase = [smregistro].[spTraslapeClase] @codSeccion, 

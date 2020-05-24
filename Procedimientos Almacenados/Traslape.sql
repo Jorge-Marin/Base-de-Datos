@@ -4,7 +4,7 @@
 -- Description:	Verifica que no exista un traslape entre asignaturas
 -- A matricular.
 -- =============================================
-ALTER PROCEDURE  [smregistro].[spTraslapeClase]
+CREATE PROCEDURE [smregistro].[spTraslapeClase]
 	@codSeccion AS INT,
     @codAsignatura AS VARCHAR(7),
     @codCarrera AS VARCHAR(7),
@@ -19,15 +19,16 @@ BEGIN
     DECLARE @DiasPresenciales AS VARCHAR(12);
 
     /*Obteniendo la hora de inicio de la clase a matricular*/
+    /*Conseguir la seccion del periodo activo*/
     SELECT @asignaturaInicio = Se.horaInicial,
            @asignaturaFinal = Se.horaFinal, 
            @DiasPresenciales = Se.diaPresenciales 
-    FROM Registro.smregistro.Seccion Se
-        WHERE Se.codSeccion = @codSeccion
-        AND Se.codAsignatura =  @codAsignatura 
+        FROM Registro.smregistro.Seccion Se
+            WHERE Se.codSeccion = @codSeccion
+            AND Se.codAsignatura =  @codAsignatura
 
     /*Creando una tabla temporal de los dias que se impartira la clase
-    a matricular mediante un procedimiento procedimiento almacenado que resibe 
+    a matricular mediante un procedimiento procedimiento almacenado que recive 
     los dias presenciales y los devuelve a una tabla de los dias de 
     la clase*/
     IF OBJECT_ID('tempdb.dbo.#DiasAsignaturaInteres', 'U') IS NOT NULL
@@ -51,7 +52,7 @@ BEGIN
     DECLARE @cnt INT;
     SELECT @cnt = COUNT(*) FROM #claseMatriculadas;
 
-    /*Para las horas de inicio y finales, mas los dias presenciales de las 
+    /*Para las horas de inicio y fin, mas los dias presenciales de las 
     clases matriculadas*/
     DECLARE @inicioMatriculada TIME;
     DECLARE @finalMatriculada TIME;
@@ -62,10 +63,12 @@ BEGIN
         BEGIN
             /*Inicializando las variables de las horas de las clases matriculadas
             y los dias en los que se da*/            
-            SELECT @inicioMatriculada = Se.horaInicial, @finalMatriculada = Se.horaFinal, @DiasPresencialesMatriculada=Se.diaPresenciales 
-                                            FROM Registro.smregistro.Seccion Se
-                                            WHERE Se.codAsignatura = (SELECT TOP(1) codAsignatura FROM #claseMatriculadas)
-                                            AND Se.codSeccion = (SELECT TOP(1) codSeccion FROM #claseMatriculadas);
+            SELECT @inicioMatriculada = Se.horaInicial, 
+                   @finalMatriculada = Se.horaFinal, 
+                   @DiasPresencialesMatriculada=Se.diaPresenciales 
+                    FROM Registro.smregistro.Seccion Se
+                    WHERE Se.codAsignatura = (SELECT TOP(1) codAsignatura FROM #claseMatriculadas)
+                        AND Se.codSeccion = (SELECT TOP(1) codSeccion FROM #claseMatriculadas);
 
             /*Tabla temporal que se crea con el objetivo de obtener los dias 
             que se imparte la asignatura y a partir de ello recorrer la tabla y 
@@ -109,8 +112,10 @@ END
 GO
 
 
+
 DECLARE @response INT;
 EXEC @response = [smregistro].[spTraslapeClase] 0700, 'SC-101', 'IS01', '20171004244', '2020-05-05'
 PRINT CAST((@response) AS CHAR(5))
 
 
+SELECT * FROM Registro.smregistro.Seccion

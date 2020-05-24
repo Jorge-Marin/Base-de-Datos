@@ -1,7 +1,3 @@
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 -- =============================================
 -- Author:		Jorge Marin 20171003167
 -- Create date: 07/04/2020
