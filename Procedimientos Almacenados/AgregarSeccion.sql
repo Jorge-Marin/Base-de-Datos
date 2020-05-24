@@ -3,8 +3,13 @@
 -- Create date: 13-04-2020
 -- Description:	/*Agregar una secci�n*/
 -- =============================================
+/*smregistro.spAgregarSeccion 900,'FS-100','9:00','10:00',30,10,'105','LuMaMi','103'
+INSERT INTO smregistro.Seccion VALUES(900,'FS-100','9:00','10:00',30,10,'105','LuMaMi','102',1,'2020-04-20')
+select * from smregistro.Seccion
+select * from smregistro.Periodo
+delete smregistro.Seccion where codSeccion = 900*/
 
-CREATE PROCEDURE smregistro.spAgregarSeccion
+ALTER PROCEDURE smregistro.spAgregarSeccion
 		@codSeccion INT,
 		@codAsignatura VARCHAR(7),
 		@horaInicio TIME,
@@ -26,15 +31,26 @@ BEGIN
 				DECLARE @cantidadClases INT --aumentarlo a catedratico en caso de agregarlo
 				DECLARE @activo BIT --activarlo en catedratico en caso de agregar la seccion
 				DECLARE @cantidadSecciones INT
+				DECLARE @codPeriodo INT
+				DECLARE @fechaPeriodo DATE
+
+				SET @codPeriodo = (SELECT codPeriodo
+									FROM smregistro.Periodo
+										WHERE activo = 1)
+
+				SET @fechaPeriodo = (SELECT fechaInicio
+									FROM smregistro.Periodo
+										WHERE activo = 1)
+
 
 			
 				SET @cantidadSecciones = ((SELECT COUNT(codSeccion) FROM Registro.smregistro.Seccion) 
 										+ (SELECT COUNT(*) FROM [smregistro].[SeccionLab]))
-
+								
 				/*Crear tablas temporales para traslape de aulas*/
 				IF(@codAsignatura IN (SELECT codAsignatura FROM Registro.smregistro.Asignatura))
 					BEGIN
-
+					
 						CREATE TABLE #DiasAsignaturaSeccionNueva (codDia INT PRIMARY KEY, 
 															  	  Dia VARCHAR(2));
 					
@@ -68,7 +84,7 @@ BEGIN
 						DECLARE @inicioSeccionExistente TIME;
 						DECLARE @FinalSeccionExistente TIME;
 						DECLARE @DiasPresencialesExistente VARCHAR(12);
-
+						
 						WHILE @cantidadSecciones>0
 							BEGIN
 								SELECT @inicioSeccionExistente = horaInicial, 
@@ -231,7 +247,9 @@ BEGIN
 								@codEdificio,
 								@aula, 
 								@diasImpartir , 
-								@codCatedratico)
+								@codCatedratico,
+								@codPeriodo,
+								@fechaPeriodo)
 
 						UPDATE Registro.smregistro.Catedratico 
 							SET cantidadClases = (cantidadClases + 1), activo = 1
@@ -260,4 +278,4 @@ END
 --UPDATE Registro.smregistro.Catedratico SET cantidadClases = 2 
 --delete Registro.smregistro.Seccion where codSeccion = 800 and codAsignatura = 'FS-100'
 --13-15
---[dbo].[agregarSeccion] 800, 'FS-100', '8:00', '9:00', 30, 10, '105', 'LuMaMi', '102'
+-- smregistro.spAgregarSeccion 800, 'FS-100', '8:00', '9:00', 30, 10, '105', 'LuMaMi', '102',1,'2020-04-20'
