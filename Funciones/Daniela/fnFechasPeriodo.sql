@@ -20,4 +20,4 @@ RETURN
 		WHERE activo = 1
 )
 GO
---SELECT * FROM [dbo].[fnFechasPeriodo]()
+--SELECT * FROM smregistro.fnFechasPeriodo()

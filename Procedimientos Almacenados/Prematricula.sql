@@ -72,7 +72,7 @@ BEGIN
         END
 
 
-    IF(CONVERT(TIME, '00:00:00:00')<=CONVERT(TIME, GETDATE(), 108) AND CONVERT(TIME, GETDATE(), 108)<CONVERT(TIME, '23:59:00:00'))
+    IF(CONVERT(TIME, '09:00:00:00')<=CONVERT(TIME, GETDATE(), 108) AND CONVERT(TIME, GETDATE(), 108)<CONVERT(TIME, '23:59:00:00'))
         BEGIN 
             /*Procedimiento para calcular el indice global*/
             DECLARE @indiceGlobal INT
@@ -167,7 +167,7 @@ GO
 
 
 
-[smregistro].[Prematricula] '20171004244', 'IS01', 'MM-110', 0800, '2020-04-20', 1;
+[smregistro].[Prematricula] '20171004244', 'IS01', 'FS-100', 1200, '2020-04-20', 1;
 USE Registro;
 
 SELECT * FROM Registro.smregistro.Estudiante;
@@ -176,7 +176,7 @@ SELECT * FROM Registro.smregistro.Estudiante;
 UPDATE Registro.smregistro.Estudiante 
 SET unidadesValorativas = 25 WHERE numCuenta = '20171004244';
 
-
+USE Registro;
 SELECT * FROM Registro.smregistro.MatriculaClase;
 
 UPDATE Registro.smregistro.Seccion SET cupos = 0 
@@ -188,7 +188,7 @@ DELETE FROM Registro.smregistro.MatriculaClase
 	AND codAsignatura = 'MM-110'
 	AND cuentaEstudiante = '20171004244';
 
-DELETE FROM Registro.smregistro.HistorialAcademico;
+DELETE FROM Registro.smregistro.MatriculaClase;
 
 SELECT * FROM Registro.smregistro.Seccion;
 
@@ -199,3 +199,4 @@ UPDATE Registro.smregistro.Periodo
         finalPrematricula = '2020-05-28'
     WHERE activo = 1;
     
+SELECT * FROM Registro.smregistro.HistorialAcademico

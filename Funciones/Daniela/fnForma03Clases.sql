@@ -39,4 +39,4 @@ RETURN
 		AND Au.codEdificioFF = Se.codEdificioFF
 	WHERE cuentaEstudiante = @cuentaEstudiante
 GO
---SELECT * FROM [dbo].[FnForma03Clases]('20171004244')
+--SELECT * FROM smregistro.FnForma03Clases ('20171004244')

@@ -57,3 +57,5 @@ BEGIN
 		RETURN @estado;
 END
 GO
+
+--PRINT smregistro.accountStatus ('20171004244')

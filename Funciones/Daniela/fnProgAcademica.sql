@@ -1,3 +1,5 @@
+USE Registro;
+GO
 -- =============================================
 -- Author:		Bessy Daniela Zavala
 -- Create date: 23-04-2020
