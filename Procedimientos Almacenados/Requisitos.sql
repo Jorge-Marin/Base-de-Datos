@@ -15,8 +15,10 @@ BEGIN
 	IF(@codCarrera IN (SELECT [codCarrera] FROM [smregistro].[Carrera]) 
 			AND @codClase IN (SELECT [codAsignatura] FROM [smregistro].[Asignatura]))
 		BEGIN 
-			SELECT [codAsignarutaRequisitos] 
-				FROM [smregistro].[Requisitos]
+			SELECT Re.codAsignaturaFFR,Re.[codAsignarutaRequisitos], Asi.nombreAsignatura
+				FROM [smregistro].[Requisitos] AS Re
+					INNER JOIN smregistro.Asignatura AS Asi
+						ON Asi.codAsignatura = Re.codAsignarutaRequisitos
 				WHERE @codCarrera = [codCarreraFFR] AND @codClase = [codAsignaturaFFR]
 		END
 	ELSE
@@ -25,3 +27,4 @@ BEGIN
 		END
 END
 GO
+/*smregistro.spRequisitos 'IS01','MM-201'*

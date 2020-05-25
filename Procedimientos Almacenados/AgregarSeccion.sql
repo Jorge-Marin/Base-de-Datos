@@ -272,10 +272,3 @@ BEGIN
 				ROLLBACK TRANSACTION
 			END CATCH
 END
-						/*Seccion de prueba*/
---SELECT * FROM Registro.smregistro.Seccion
---SELECT * FROM Registro.smregistro.Catedratico
---UPDATE Registro.smregistro.Catedratico SET cantidadClases = 2 
---delete Registro.smregistro.Seccion where codSeccion = 800 and codAsignatura = 'FS-100'
---13-15
--- smregistro.spAgregarSeccion 800, 'FS-100', '8:00', '9:00', 30, 10, '105', 'LuMaMi', '102',1,'2020-04-20'
