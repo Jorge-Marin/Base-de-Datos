@@ -6,7 +6,7 @@
 -- si ya ha cancelado el estado de cuenta, si no lo ha cancelado no podra 
 -- matricular la asignatura.
 -- =============================================
-CREATE PROCEDURE  [smregistro].[Prematricula]
+ALTER PROCEDURE  [smregistro].[Prematricula]
     @cuentaEstudiante AS VARCHAR(15),
 	@codigoCarrera AS VARCHAR(7),
 	@codAsigMatriculada AS VARCHAR(7),
@@ -72,7 +72,7 @@ BEGIN
         END
 
 
-    IF(CONVERT(TIME, '09:00:00:00')<=CONVERT(TIME, GETDATE(), 108) AND CONVERT(TIME, GETDATE(), 108)<CONVERT(TIME, '23:59:00:00'))
+    IF(CONVERT(TIME, '00:00:00:00')<=CONVERT(TIME, GETDATE(), 108) AND CONVERT(TIME, GETDATE(), 108)<CONVERT(TIME, '23:59:00:00'))
         BEGIN 
             /*Procedimiento para calcular el indice global*/
             DECLARE @indiceGlobal INT
@@ -122,8 +122,9 @@ BEGIN
             /*En caso de que su indice Global sea Cero*/
             /*Y que no tenga asignarutas en su historial academico*/
             /*y que el año de ingreso sea el año actual*/
-            IF(@indiceGlobal=0 AND @numAsignaturasAprobadas=0 AND SUBSTRING (@cuentaEstudiante,1,4)=CAST(YEAR(GETDATE()) AS VARCHAR(4)))
+            IF(@indiceGlobal=0 AND @numAsignaturasAprobadas=0 AND /*SUBSTRING (@cuentaEstudiante,1,4)*/2020=CAST(YEAR(GETDATE()) AS VARCHAR(4)))
                 BEGIN  
+                    PRINT 'Primer Ingreso';
                     EXEC [smregistro].[spMatriculaPrioridad] @cuentaEstudiante, @codigoCarrera, 
                     @codAsigMatriculada, @codSeccion, @fechaPeriodo,@codperiodo, 2,  @fechaInicio, @fechaFinal;
                     RETURN;
@@ -162,7 +163,39 @@ BEGIN
         PRINT 'El periodo de prematricula estara habilitado de 9:00 a.m. a 11:59 p.m.'    
 END
 GO
-/*
-[smregistro].[Prematricula] '20171004244', 'IS01', 'IS-110', 1000, '2020-05-05', 3;
 
 
+
+
+[smregistro].[Prematricula] '20171004244', 'IS01', 'FS-100', 1200, '2020-04-20', 1;
+
+
+SELECT * FROM Registro.smregistro.Estudiante;
+
+
+UPDATE Registro.smregistro.Estudiante 
+SET unidadesValorativas = 25 WHERE numCuenta = '20171004244';
+
+
+SELECT * FROM Registro.smregistro.MatriculaClase;
+
+UPDATE Registro.smregistro.Seccion SET cupos = 30 
+	WHERE codSeccion = 800 
+	AND codAsignatura = 'MM-110';
+
+DELETE FROM Registro.smregistro.MatriculaClase 
+	WHERE codSeccionClase = 800
+	AND codAsignatura = 'MM-110'
+	AND cuentaEstudiante = '20171004244';
+
+DELETE FROM Registro.smregistro.HistorialAcademico;
+
+SELECT * FROM Registro.smregistro.Seccion;
+
+SELECT * FROM Registro.smregistro.Periodo;
+
+UPDATE Registro.smregistro.Periodo 
+    SET inicioPrematricula = '2020-05-24',
+        finalPrematricula = '2020-05-28'
+    WHERE activo = 1;
+    

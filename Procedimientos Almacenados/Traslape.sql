@@ -4,12 +4,11 @@
 -- Description:	Verifica que no exista un traslape entre asignaturas
 -- A matricular.
 -- =============================================
-CREATE PROCEDURE [smregistro].[spTraslapeClase]
+ALTER PROCEDURE [smregistro].[spTraslapeClase]
 	@codSeccion AS INT,
     @codAsignatura AS VARCHAR(7),
     @codCarrera AS VARCHAR(7),
-    @cuentaEstudiante AS VARCHAR(15),
-    @fechaPeriodo AS DATE
+    @cuentaEstudiante AS VARCHAR(15)
 AS
 BEGIN
 	SET NOCOUNT ON;
@@ -17,6 +16,17 @@ BEGIN
     DECLARE @asignaturaInicio AS TIME;
     DECLARE @asignaturaFinal AS TIME;
     DECLARE @DiasPresenciales AS VARCHAR(12);
+
+    /*Necesito codPeriodo e fecha de inicio para especificar la clase en el actual 
+    periodo activo*/
+    DECLARE @codPeriodo INT;
+    DECLARE @fechaInicio DATE;
+
+    SELECT @codPeriodo = Pe.codPeriodo,
+            @fechaInicio = Pe.fechaInicio 
+            FROM Registro.smregistro.Periodo Pe
+            WHERE Pe.activo = 1;
+
 
     /*Obteniendo la hora de inicio de la clase a matricular*/
     /*Conseguir la seccion del periodo activo*/
@@ -26,6 +36,9 @@ BEGIN
         FROM Registro.smregistro.Seccion Se
             WHERE Se.codSeccion = @codSeccion
             AND Se.codAsignatura =  @codAsignatura
+            AND Se.codPeriodo = @codPeriodo
+            AND Se.fechaPeriodo = @fechaInicio;
+
 
     /*Creando una tabla temporal de los dias que se impartira la clase
     a matricular mediante un procedimiento procedimiento almacenado que recive 
@@ -45,7 +58,8 @@ BEGIN
     SELECT Ma.codSeccionClase, Ma.codAsignatura FROM Registro.smregistro.MatriculaClase Ma
         WHERE Ma.codCarrera = @codCarrera
         AND Ma.cuentaEstudiante = @cuentaEstudiante
-        AND Ma.fechaPeriodo = fechaPeriodo
+        AND Ma.fechaPeriodo = @fechaInicio
+        AND Ma.codperiodo = @codPeriodo
 
     /*Inicializa la variable con la cantidad de elementos que haya en la tabla
     #clasesMatriculadas*/
@@ -114,8 +128,8 @@ GO
 
 
 DECLARE @response INT;
-EXEC @response = [smregistro].[spTraslapeClase] 0700, 'SC-101', 'IS01', '20171004244', '2020-05-05'
+EXEC @response = [smregistro].[spTraslapeClase] 1000, 'IS-110', 'IS01', '20171004244'
 PRINT CAST((@response) AS CHAR(5))
 
 
-SELECT * FROM Registro.smregistro.Seccion
+SELECT * FROM Registro.smregistro.MatriculaClase

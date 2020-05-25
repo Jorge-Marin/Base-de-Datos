@@ -66,7 +66,6 @@ BEGIN
 												WHERE codAsignatura = @codAsigMatriculada 
 												AND codSeccion = @codSeccion), 404)
 
-
 					/*Verifica que: 
 							1. El estudiante tenga unidades Valorativas Disponibles para matricular
 								la asignatura
@@ -75,6 +74,7 @@ BEGIN
 							4. Que exista la seccion que desea matricular*/
 					IF((@uvDisponible-@uvAsignatura)>=0 AND @uvDisponible IS NOT NULL AND @aprobada = 0 AND @cuposSeccion!= 404)
 						BEGIN
+						
 							
 							/*Comprueba que el estudiante cumpla con los requisitos para la clase*/
 							IF(@requisitos=0)

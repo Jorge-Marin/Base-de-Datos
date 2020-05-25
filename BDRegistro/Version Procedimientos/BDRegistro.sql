@@ -525,5 +525,3 @@ CREATE TABLE Registro.smregistro.TelefonoEstudiante(
 								FOREIGN KEY(codUsuario) REFERENCES Registro.smregistro.Estudiante(numCuenta)				
 )
 GO
-
--

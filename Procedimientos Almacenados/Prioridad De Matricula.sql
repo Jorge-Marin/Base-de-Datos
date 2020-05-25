@@ -11,21 +11,21 @@ CREATE PROCEDURE  [smregistro].[spMatriculaPrioridad]
     @fechaPeriodo DATE,
     @codperiodo INT,
     @prioridad INT,
-    @inicioPrematricula DATE, 
-    @finalPrematricula DATE
+    @inicioFecha DATE, 
+    @finalFecha DATE
 AS
 BEGIN
 	SET NOCOUNT ON;
 
     DECLARE @fecha AS DATE;
-
+   
     /*Tabla temporal que requiere una fecha de inicio y final de
     para generar las fechas entre ese intervalo*/
     IF OBJECT_ID('tempdb.dbo.#FechasPrioriMatricula', 'U') IS NOT NULL
                 DROP TABLE #FechasPrioriMatricula; 
             CREATE TABLE #FechasPrioriMatricula (prioridad INT PRIMARY KEY,fecha DATE);
             INSERT INTO #FechasPrioriMatricula EXEC [smregistro].[FechasRangosPrioridad] 
-                                                @inicioPrematricula,@finalPrematricula;
+                                                                    @inicioFecha, @finalFecha;
 
     /*Obtiene la fecha de la tabla generada pero filtra por prioridad*/    
     SET @fecha = CAST((SELECT fecha FROM #FechasPrioriMatricula WHERE prioridad = @prioridad) AS DATE);
@@ -40,7 +40,7 @@ BEGIN
 	        DECLARE @traslapeClase int
 	        EXEC @traslapeClase = [smregistro].[spTraslapeClase] @codSeccion, 
                                                         @codAsigMatriculada, @codigoCarrera, 
-														@cuentaEstudiante, @fechaPeriodo;
+														@cuentaEstudiante;
             IF(@traslapeClase=1)
                 BEGIN 
                     PRINT 'Ya tiene una clase Matriculada en este horario';
@@ -85,6 +85,4 @@ BEGIN
             RETURN;
         END
 END
-GO
-
-						
+GO						

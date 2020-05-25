@@ -208,10 +208,11 @@ SELECT * FROM Registro.smregistro.Aula
 INSERT INTO Registro.smregistro.Seccion VALUES (0700,'SC-101','7:00','8:00',50,10,'105','LuMaMiJu','102',1,'2020-04-20')
 INSERT INTO Registro.smregistro.Seccion VALUES (0800,'MM-110','8:00','9:00',35,10,'203','LuMaMiJuVi','102',1,'2020-04-20')
 INSERT INTO Registro.smregistro.Seccion VALUES(1200,'FS-100','12:00','13:00',30,10,105,'LuMaMiJuVi','102',1,'2020-04-20')
-/*
-INSERT INTO Registro.smregistro.Seccion VALUES (0900,'MM-111',0900,1000,35,4,'203','LuMaMiJuVi','102')
-INSERT INTO Registro.smregistro.Seccion VALUES (1000,'IS-110',1000,1100,25,4,'Laboratorio 2 (IS)','LuMaMi','102')
-*/
+
+INSERT INTO Registro.smregistro.Seccion VALUES (0900,'MM-111','09:00','10:00',35,4,'203','LuMaMiJuVi','102', 1,'2020-04-20')
+INSERT INTO Registro.smregistro.Seccion VALUES (1000,'IS-110','10:00','11:00',25,4,'Laboratorio 2 (IS)','LuMaMi','102',1,'2020-04-20')
+INSERT INTO Registro.smregistro.Seccion VALUES (0800,'IN-101','08:00','09:00',35,10,'105','LuMaMiJu','102', 1,'2020-04-20')
+
 
 SELECT * FROM Registro.smregistro.Seccion
 
@@ -371,8 +372,8 @@ INSERT INTO Registro.smregistro.MatriculaClase (codCarrera,
 												codperiodo) VALUES (
 													'IS01',
 													'20171004244',
-													1200,
-													'FS-100',
+													800,
+													'MM-110',
 													'2020-04-20'
 													,1
 												)
@@ -380,10 +381,8 @@ INSERT INTO Registro.smregistro.MatriculaClase (codCarrera,
 SELECT * FROM Registro.smregistro.MatriculaClase
 
 --33. MatriculaLab
-INSERT INTO Registro.smregistro.MatriculaLab VALUES('IS01','20171004244','FS1LAB','FS-100','1000')
+INSERT INTO Registro.smregistro.MatriculaLab VALUES('IS01','20171004244','FS1LAB','FS-100','1000',0)
 SELECT * FROM Registro.smregistro.MatriculaLab
-
-DELETE Registro.smregistro.MatriculaClase
 
 --34. Cancelacion Clase
 --INSERT INTO Registro.smregistro.CancelacionClase VALUES('AQ01','20161003244','1100','FS-100','2020-04-05',2,'problemas economicos')
@@ -416,4 +415,5 @@ INSERT INTO Registro.smregistro.TelefonoEstudiante VALUES('20171004244','9846375
 INSERT INTO Registro.smregistro.TelefonoEstudiante VALUES('20171004244','87654326')
 
 
-SELECT * FROM Registro.smregistro.HistorialAcademico;
+SELECT * FROM Registro.smregistro.Instructor
+
