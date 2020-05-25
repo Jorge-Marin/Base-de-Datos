@@ -7,9 +7,20 @@ GO
 -- =============================================
 
 CREATE VIEW smregistro.ViewTelefonoEmpleados AS
-  SELECT DISTINCT (primerNombre+' '+segundoNombre+' '+apellidoPaterno+' '+apellidoMaterno) AS Nombre,
-			codEmpleado AS Código,
-			telefono AS Teléfono
-	FROM Registro.smregistro.Empleado AS e
+  SELECT DISTINCT (CONCAT(Es.primerNombre,' ',
+  						  Es.segundoNombre,' ',
+						  Es.apellidoPaterno,' ',
+						  Es.apellidoMaterno)) AS Nombre,
+			codEmpleado AS Codigo,
+			telefono AS Telofono
+	FROM Registro.smregistro.Empleado AS Es
 		INNER JOIN Registro.smregistro.TelefonoEmpleado AS c
-			ON e.codEmpleado = c.codUsuario
+			ON Es.codEmpleado = c.codUsuario
+
+/*
+    USE Registro;
+    GO
+
+	SELECT * FROM smregistro.ViewTelefonoEmpleados
+
+*/

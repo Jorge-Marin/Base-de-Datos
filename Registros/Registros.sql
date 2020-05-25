@@ -307,8 +307,8 @@ SELECT * FROM smregistro.ModalidadCarrera
 
 --29. Estudiante
 INSERT INTO smregistro.Estudiante VALUES('20171004244','0813199800412','Bessy','Daniela','Zavala','Licona','Dan_2J2','05-19-1998',1200,750,270,25,1,11)
-/*INSERT INTO smregistro.Estudiante(numCuenta,identidad,primerNombre,segundoNombre,primerApellido,segundoApellido,clave,fechaNacimiento,indicePAA,municipioNac) VALUES('20161004244','0914199800412','Jorge','Arturo','Reyes','Marin','Jor_2J6','10-19-1998',1000,10)
-INSERT INTO smregistro.Estudiante(numCuenta,identidad,primerNombre,segundoNombre,primerApellido,segundoApellido,clave,fechaNacimiento,indicePAA,municipioNac) VALUES('20151004244','0801199300412','Daniela','','Payan','','Dan_2J2','11-19-1998',1100,9)
+INSERT INTO smregistro.Estudiante(numCuenta,identidad,primerNombre,segundoNombre,primerApellido,segundoApellido,clave,fechaNacimiento,indicePAA,municipioNac) VALUES('20161004244','0914199800412','Jorge','Arturo','Reyes','Marin','Jor_2J6','10-19-1998',1000,10)
+/*INSERT INTO smregistro.Estudiante(numCuenta,identidad,primerNombre,segundoNombre,primerApellido,segundoApellido,clave,fechaNacimiento,indicePAA,municipioNac) VALUES('20151004244','0801199300412','Daniela','','Payan','','Dan_2J2','11-19-1998',1100,9)
 INSERT INTO smregistro.Estudiante(numCuenta,identidad,primerNombre,segundoNombre,primerApellido,segundoApellido,clave,fechaNacimiento,indicePAA,municipioNac) VALUES('20171504244','0814199800512','Dulce','Esperanza','Licona','Elvir','Dul_2J2','02-19-1999',800,11)
 INSERT INTO smregistro.Estudiante(numCuenta,identidad,primerNombre,segundoNombre,primerApellido,segundoApellido,clave,fechaNacimiento,indicePAA,municipioNac) VALUES('20161003244','0816199800452','Isaac','Fernando','Zavala','','Isaac_2J2','05-19-1999',900,8)
 */
@@ -417,3 +417,35 @@ INSERT INTO Registro.smregistro.TelefonoEstudiante VALUES('20171004244','8765432
 
 SELECT * FROM Registro.smregistro.Instructor
 
+
+--Insertando en la tabla Aspectos
+
+INSERT INTO Registro.smregistro.AspectoRepresentativo VALUES('Artisticos','Se comprende a todas aquellas 
+creaciones efectuadas por el ser humano que expresan una mirada sensible respecto del mundo');
+INSERT INTO Registro.smregistro.AspectoRepresentativo VALUES('Culturales','Las costumbres, las prácticas, 
+las maneras de ser, los rituales, los tipos de vestimenta y las normas de comportamiento son aspectos 
+incluidos en la cultura');
+INSERT INTO Registro.smregistro.AspectoRepresentativo VALUES('Deportivos','Es una actividad física reglamentada, 
+normalmente de carácter competitivo, que en algunos casos, mejora la condición física y psíquica de quien lo practica.');
+
+
+--Insertando en la Tabla Discapacidad.
+INSERT INTO Registro.smregistro.Discapacidad VALUES ('Física','Es todo aquel tipo de limitación generada 
+por la presencia de una problemática vinculada a una disminución o eliminación de capacidades motoras o físicas')
+INSERT INTO Registro.smregistro.Discapacidad VALUES ('Sensorial','Hace referencia a la existencia de limitaciones 
+derivadas de la existencia de deficiencias en alguno de los sentidos que nos permiten percibir el medio sea externo o interno.')
+INSERT INTO Registro.smregistro.Discapacidad VALUES ('Intelectual','Se define como toda aquella limitación del funcionamiento 
+intelectual que dificulta la participación social o el desarrollo de la autonomía o de ámbitos como el académico o el laboral,')
+INSERT INTO Registro.smregistro.Discapacidad VALUES ('Psíquica','Hablamos de discapacidad psíquica cuando estamos ante una 
+situación en que se presentan alteraciones de tipo conductual y del comportamiento adaptativo')
+INSERT INTO Registro.smregistro.Discapacidad VALUES ('Visceral','Aparece en aquellas personas que padecen algún tipo de 
+deficiencia en alguno de sus órganos, la cual genera limitaciones en la vida y participación en comunidad del sujeto.')
+INSERT INTO Registro.smregistro.Discapacidad VALUES ('Múltiple','Este tipo de discapacidad es la que se deriva de una 
+combinación de limitaciones derivadas de algunas de las anteriores deficiencias. ')
+
+SELECT * FROM Registro.smregistro.RepresentanteUNAH
+
+SELECT * FROM Registro.smregistro.Estudiante
+
+INSERT INTO Registro.smregistro.RepresentanteUNAH VALUES(1,'20161004244')
+INSERT INTO Registro.smregistro.PROSENE VALUES(1,'20171004244')

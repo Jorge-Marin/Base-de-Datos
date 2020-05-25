@@ -18,3 +18,9 @@ CREATE VIEW smregistro.mostrarPROSENE AS
              INNER JOIN Registro.smregistro.Discapacidad Dis
              ON Po.codDiscapacidadFF = Dis.codDiscapacidad
 
+/*
+    USE Registro;
+    GO
+    
+    SELECT * FROM smregistro.mostrarPROSENE
+*/

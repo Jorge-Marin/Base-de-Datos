@@ -40,6 +40,10 @@ CREATE VIEW smregistro.cuposSecciones AS
                     Mat.cuentaEstudiante
            
 
-/*SELECT * FROM Registro.smregistro.CorreoEmpleado
+/*
+    USE Registro;
+    GO
+     
+     SELECT * FROM smregistro.cuposSecciones
+*/
 
-/*UPDATE Registro.smregistro.Seccion SET cupos = 0 WHERE codSeccion = 0800*/

@@ -6,7 +6,7 @@
 -- y mudar los a la tabla historial academico
 -- En combinacion con un Job
 -- =============================================
-ALTER TRIGGER [smregistro].[trFinalizePeriod]
+CREATE TRIGGER [smregistro].[trFinalizePeriod]
    ON  [smregistro].[MatriculaClase]
    AFTER DELETE
 AS 
@@ -22,14 +22,14 @@ BEGIN
 	SET NOCOUNT ON;
 
 
-	IF(/*CAST(@currentDate AS VARCHAR(12))*/ GETDATE() = GETDATE() /*@finalizaPeriodo*/)
+	IF(CAST(@currentDate AS VARCHAR(12)) = @finalizaPeriodo)
 		BEGIN
 			/*
 			El valor de observacion osea, APR, RPD, N/D, y otros
 			se especifican desde un front end, y se actualizan en la tabla matricula, 
 			y se pasa ese valor a observacion del Historial Academico.
 			*/
-			PRINT 'HELLO';
+
 			INSERT INTO Registro.smregistro.HistorialAcademico(
 																codCarrera,
 																cuentaEstudiante,
@@ -52,5 +52,3 @@ BEGIN
 		END
 END
 GO
-
-USE Registro;

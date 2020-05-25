@@ -7,12 +7,21 @@ GO
 -- =============================================
 
 CREATE VIEW smregistro.ViewCorreoEstudiantes AS
-  SELECT DISTINCT (primerNombre+' '+segundoNombre+' '+primerApellido+' '+segundoApellido) AS Nombre,
+  SELECT DISTINCT (CONCAT(Es.primerNombre,' ',
+  					      Es.segundoNombre,' ',
+						  Es.primerApellido,' ',
+						  Es.segundoApellido)) AS Nombre,
 			numCuenta AS Cuenta,
 			correo AS Correo,
 			tipo AS TipoCorreo
-	FROM Registro.smregistro.Estudiante AS e
+	FROM Registro.smregistro.Estudiante AS Es
 		INNER JOIN Registro.smregistro.CorreoEstudiante AS c
-			ON e.numCuenta = c.codUsuario
+			ON Es.numCuenta = c.codUsuario
 
+
+/*
+    USE Registro;
+    GO
 	
+	SELECT * FROM smregistro.ViewCorreoEstudiantes
+*/

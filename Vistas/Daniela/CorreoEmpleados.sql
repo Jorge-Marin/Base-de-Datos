@@ -7,10 +7,21 @@ GO
 -- =============================================
 
 CREATE VIEW smregistro.ViewCorreoEmpleados AS
-  SELECT DISTINCT (primerNombre+' '+segundoNombre+' '+apellidoPaterno+' '+apellidoMaterno) AS Nombre,
-			codEmpleado AS Código,
+  SELECT DISTINCT (CONCAT(e.primerNombre,' ',
+  						  e.segundoNombre,' ',
+						  e.apellidoPaterno,' ',
+						  e.apellidoMaterno)) AS Nombre,
+			codEmpleado AS Codigo,
 			correo AS Correo,
 			tipo AS TipoCorreo
 	FROM Registro.smregistro.Empleado AS e
 		INNER JOIN Registro.smregistro.CorreoEmpleado AS c
 			ON e.codEmpleado = c.codUsuario
+
+
+/*
+    USE Registro;
+    GO
+    
+		SELECT * FROM smregistro.ViewCorreoEmpleados
+*/		

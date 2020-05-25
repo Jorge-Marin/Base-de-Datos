@@ -18,3 +18,12 @@ CREATE VIEW smregistro.PlanDeEstudio AS
 					INNER JOIN smregistro.Requisitos AS RE
 						ON RE.codAsignaturaFFR = Asi.codAsignatura
 							WHERE codCarreraFF = 'IS01'
+
+
+/*
+    USE Registro;
+    GO
+	
+	SELECT * FROM smregistro.PlanDeEstudio
+
+*/
