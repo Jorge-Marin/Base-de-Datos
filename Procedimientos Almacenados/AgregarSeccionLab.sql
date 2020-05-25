@@ -272,7 +272,4 @@ END
 --SELECT * FROM Registro.smregistro.Instructor
 --UPDATE Registro.smregistro.Catedratico SET cantidadClases = 2 
 --delete Registro.smregistro.Seccion where codSeccion = 800 and codAsignatura = 'FS-100'
---13-15
 --smregistro.spAgregarSeccionLab 800, 'FS1LAB','FS-100', '8:00', '9:00', 15, 'LuMaMi',10, '105', '300'
-select * from smregistro.SeccionLab
-delete smregistro.SeccionLab where codSeccion = 800
