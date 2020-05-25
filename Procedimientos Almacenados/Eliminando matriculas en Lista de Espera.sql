@@ -4,7 +4,7 @@
 -- Description:	Procedimiento almacenado que elimina todas mas asignaturas matriculadas 
 --espera terminado el periodo de cancelaciones y adiciones de asignaturas
 -- =============================================
-ALTER PROCEDURE [smregistro].[spFinalizacionAdiciones] 
+CREATE PROCEDURE [smregistro].[spFinalizacionAdiciones] 
 AS
 BEGIN
 	SET NOCOUNT ON;
@@ -23,7 +23,7 @@ BEGIN
 			--Si validar fecha es igual a la fecha actual significa que hoy es el dia el cual se finaliza
 			--el periodo de adiciones y cancelacion, se prosigue a limpiar la tabla registro de 
 			--las asignaturas en espera
-			IF(@validarFecha <= CAST(GETDATE() AS DATE))
+			IF(@validarFecha<= CAST(GETDATE() AS DATE))
 				BEGIN
 					--Elimina los registros donde espera es igual a 1, 
 					--osea el indicador de asignaturas en esperas es verdadero
@@ -59,6 +59,7 @@ BEGIN
     
 END
 GO
+
 
 [smregistro].[spFinalizacionAdiciones] 
 

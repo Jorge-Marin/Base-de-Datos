@@ -167,8 +167,8 @@ GO
 
 
 
-[smregistro].[Prematricula] '20171004244', 'IS01', 'FS-100', 1200, '2020-04-20', 1;
-
+[smregistro].[Prematricula] '20171004244', 'IS01', 'MM-110', 0800, '2020-04-20', 1;
+USE Registro;
 
 SELECT * FROM Registro.smregistro.Estudiante;
 
@@ -179,7 +179,7 @@ SET unidadesValorativas = 25 WHERE numCuenta = '20171004244';
 
 SELECT * FROM Registro.smregistro.MatriculaClase;
 
-UPDATE Registro.smregistro.Seccion SET cupos = 30 
+UPDATE Registro.smregistro.Seccion SET cupos = 0 
 	WHERE codSeccion = 800 
 	AND codAsignatura = 'MM-110';
 
