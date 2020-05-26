@@ -2,7 +2,7 @@
 Consulta que retorna los datos del historial acad�mico de un estudiante proporcionando su n�mero de cuenta
 */ 
 
-SELECT Es.numCuenta 'Cuenta',
+SELECT DISTINCT Es.numCuenta 'Cuenta',
 		Es.primerNombre+ ' '+Es.segundoNombre AS 'Nombres',
 		Es.primerApellido+' '+Es.segundoApellido AS 'Apellidos',
 		Asi.codAsignatura 'C�digo de asignatura',
