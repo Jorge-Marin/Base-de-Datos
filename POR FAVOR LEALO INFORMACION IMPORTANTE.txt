@@ -1,0 +1,43 @@
+-------------------------------------------------------------------
+|		Universidad Nacional Autónoma de Honduras	   |
+|			Proyecto Base De Datos		           |
+|		      Catedratico: Nestor Luque			   |
+|								   |
+|			    Integrantes:		           |
+|		 Daniela Zavala	 --  20171004244	           |
+|		 Jorge Marin     --  20171003167		   |
+|								   |
+|								   |
+--------------------------------------------------------------------
+
+----------------------  Enlaces Importantes  ss------------------------
+-- Tableros de Trello
+	https://trello.com/invite/b/g1H3soGj/0c4c37904989faf60442176865cebdbf/bases-de-datos
+
+-- Repositorio GitHub
+https://github.com/Jorge-Marin/Base-de-Datos.git
+
+-- Enlace del Video del Proyecto 
+https://drive.google.com/open?id=1eP7wveoqIS4Wvq1w1WjfV8N0UBb_DI3E
+
+------------------------ Indice Del Video ---------------------------
+|								    |
+/*------- Consulta Especificada Por El Ingeniero Min: 16:00 -------*/
+|								    |
+---------------------------------------------------------------------
+1. Presentacion 00:00 min - 1:13 min
+2. Conexion no SQL Server 
+	WorkBrench 1:13 min - 4:12  min
+	Transferencia de Datos con Talend 4:12 min - 7:40 min
+
+3. JOBS  7:40 min - 12:39 min
+4. Consultas 12:39 min - 16:44 min
+5. Indices 16:44 min - 18:28 min
+6. Procedimientos 
+   Triggers 
+   Transacciones 
+	Parte I: 18:28 min - 30:00 min
+	Parte II: 30:00 min - 39:19 min
+7. Vistas 39:19 min - 43:00 min
+8. Funciones 43:00 min - 48:42 min
+9. Final 48:42 min - 49:05 min
