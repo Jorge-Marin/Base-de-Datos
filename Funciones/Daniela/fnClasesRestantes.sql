@@ -42,4 +42,4 @@ BEGIN
 	RETURN CONCAT('--Cantidad de asignaturas restantes: ',@clasesRestantes, ' --porcentaje de la carrera restante: ',100-@porcentaje,'%')
 END
 GO
---PRINT [dbo].[fnCantClasesAprobadas]('20171004244','IS01')
+--PRINT smregistro.fnCantClasesRestantes ('20171004244','IS01')

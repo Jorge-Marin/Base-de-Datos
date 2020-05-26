@@ -3,7 +3,7 @@
 -- Create date: 12/04/2020
 -- Description:	Prioridad de Matricula
 -- =============================================
-ALTER PROCEDURE  [smregistro].[spMatriculaPrioridad]
+CREATE PROCEDURE  [smregistro].[spMatriculaPrioridad]
 	@cuentaEstudiante AS VARCHAR(15),
 	@codigoCarrera AS VARCHAR(7),
 	@codAsigMatriculada AS VARCHAR(7),
@@ -32,7 +32,7 @@ BEGIN
     
     /*Comprueba que las fechas sean iguales, si no imprime un mensaje de su dia de matricula
     que le correspone a la persona*/
-    IF(/*CAST(GETDATE() AS DATE)*/  GETDATE()= GETDATE() /*@fecha*/)
+    IF(CAST(GETDATE() AS DATE)= @fecha)
         BEGIN
             /*Ejecucion de un procedimiento almacenado que verifica que la clase no interfiera
 	        con la hora de una asignatura matriculada, tambien considera traslapes con los dias sabados,

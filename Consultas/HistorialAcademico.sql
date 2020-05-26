@@ -1,16 +1,16 @@
 /*
-Consulta que retorna los datos del historial académico de un estudiante proporcionando su número de cuenta
+Consulta que retorna los datos del historial acadï¿½mico de un estudiante proporcionando su nï¿½mero de cuenta
 */ 
 
 SELECT Es.numCuenta 'Cuenta',
 		Es.primerNombre+ ' '+Es.segundoNombre AS 'Nombres',
 		Es.primerApellido+' '+Es.segundoApellido AS 'Apellidos',
-		Asi.codAsignatura 'Código de asignatura',
+		Asi.codAsignatura 'Cï¿½digo de asignatura',
 		Asi.nombreAsignatura 'Nombre Clase',
-		S.codSeccion 'Sección',
+		S.codSeccion 'Secciï¿½n',
 		Pe.periodo 'Periodo',
-		YEAR(Pe.fechaInicio) 'Año',
-		HA.calificacion 'Calificación',
+		YEAR(Pe.fechaInicio) 'Aï¿½o',
+		HA.calificacion 'Calificaciï¿½n',
 		Em.primerNombre+' '+Em.apellidoPaterno AS 'Profesor'
 	FROM Registro.smregistro.HistorialAcademico AS HA
 		INNER JOIN Registro.smregistro.Periodo AS Pe

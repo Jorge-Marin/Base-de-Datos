@@ -331,15 +331,15 @@ SELECT * FROM Registro.smregistro.MatriculaCarrera
 --31. HistorialAcademico
 
 INSERT INTO Registro.smregistro.HistorialAcademico 
-	VALUES('IS01','20171004244','SC-101', 700 ,1,'2020-04-20',90,'Aprobado')
+	VALUES('IS01','20171004244','SC-101', 0700 ,1,'2020-04-20',90,'Aprobado')
 INSERT INTO Registro.smregistro.HistorialAcademico 
-	VALUES('IS01','20171004244','MM-110',800,1,'2020-04-20',80,'Aprobado')
+	VALUES('IS01','20171004244','MM-110',0800,1,'2020-04-20',80,'Aprobado')
 	
-INSERT INTO Registro.smregistro.HistorialAcademico 
+/*INSERT INTO Registro.smregistro.HistorialAcademico 
 	VALUES('IS01','20171004244','MM-111',0900,1,'2020-01-20',90,'Aprobado')
 INSERT INTO Registro.smregistro.HistorialAcademico 
 	VALUES('IS01','20171004244','IS-110',1000,1,'2020-01-20',80,'Aprobado')
-	
+*/
 
 SELECT * FROM Registro.smregistro.HistorialAcademico
 

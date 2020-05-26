@@ -125,11 +125,13 @@ BEGIN
 END
 GO
 
-
-
+--Para pruebas
+/*
 DECLARE @response INT;
 EXEC @response = [smregistro].[spTraslapeClase] 1000, 'IS-110', 'IS01', '20171004244'
 PRINT CAST((@response) AS CHAR(5))
 
 
 SELECT * FROM Registro.smregistro.MatriculaClase
+
+*/

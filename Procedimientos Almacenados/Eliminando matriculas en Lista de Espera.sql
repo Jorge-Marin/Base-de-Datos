@@ -61,5 +61,5 @@ END
 GO
 
 
-[smregistro].[spFinalizacionAdiciones] 
+--[smregistro].[spFinalizacionAdiciones] 
 

@@ -46,4 +46,3 @@ CREATE VIEW smregistro.cuposSecciones AS
      
      SELECT * FROM smregistro.cuposSecciones
 */
-
