@@ -1,0 +1,9 @@
+Enlaces Importantes
+-- Tableros de Trello
+	https://trello.com/invite/b/g1H3soGj/0c4c37904989faf60442176865cebdbf/bases-de-datos
+
+-- Repositorio GitHub
+https://github.com/Jorge-Marin/Base-de-Datos.git
+
+-- Enlace del Video del Proyecto 
+https://drive.google.com/open?id=1eP7wveoqIS4Wvq1w1WjfV8N0UBb_DI3E
